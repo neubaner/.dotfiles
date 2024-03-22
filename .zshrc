@@ -116,9 +116,8 @@ fi
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
-type yay &> /dev/null && alias pacman=yay
 type exa &> /dev/null && alias ls=exa
-type nvim &> /dev/null && alias vim=nvim
+alias nvim-kickstart='NVIM_APPNAME=nvim-kickstart nvim'
 
 export PATH=~/.cargo/bin:~/.local/bin:$PATH
 export BROWSER=~/.scripts/browser.sh
