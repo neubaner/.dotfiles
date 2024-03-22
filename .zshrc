@@ -116,7 +116,7 @@ fi
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
-type exa &> /dev/null && alias ls=exa
+type eza &> /dev/null && alias ls=eza
 alias nvim-kickstart='NVIM_APPNAME=nvim-kickstart nvim'
 
 export PATH=~/.cargo/bin:~/.local/bin:$PATH
@@ -155,3 +155,18 @@ export ADB_SERVER_SOCKET=tcp:$WSL_HOST:5037
 # Git bare repo
 alias config="git --git-dir=$HOME/.dotfiles --work-tree=$HOME"
 
+# NVM
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+#.NET
+export PATH=$PATH:$HOME/.dotnet/tools
+
+# pnpm
+export PNPM_HOME="$HOME/.local/share/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end
