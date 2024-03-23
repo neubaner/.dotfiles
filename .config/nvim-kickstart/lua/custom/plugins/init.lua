@@ -2,4 +2,60 @@
 --  I promise not to create any merge conflicts in this directory :)
 --
 -- See the kickstart.nvim README for more information
-return {}
+return {
+  -- Plugin configuration in on ftplugin/java.lua
+  {
+    'mfussenegger/nvim-jdtls',
+  },
+  -- This didn't worked out of the box for me, so I'm back to nvim-jdtls for now.
+  --
+  -- {
+  --   'nvim-java/nvim-java',
+  --   tag = 'v1.0.5',
+  --   dependencies = {
+  --     'nvim-java/lua-async-await',
+  --     'nvim-java/nvim-java-core',
+  --     'nvim-java/nvim-java-test',
+  --     'nvim-java/nvim-java-dap',
+  --     'MunifTanjim/nui.nvim',
+  --     'neovim/nvim-lspconfig',
+  --     'mfussenegger/nvim-dap',
+  --     {
+  --       'williamboman/mason.nvim',
+  --       opts = {
+  --         registries = {
+  --           'github:nvim-java/mason-registry',
+  --           'github:mason-org/mason-registry',
+  --         },
+  --       },
+  --     },
+  --   },
+  --   config = function()
+  --     require('java').setup {
+  --       root_markers = {
+  --         'settings.gradle',
+  --         'gradlew',
+  --       },
+  --       jdk = {
+  --         auto_install = true,
+  --       },
+  --     }
+  --
+  --     require('lspconfig').jdtls.setup {
+  --       settings = {
+  --         java = {
+  --           configuration = {
+  --             runtimes = {
+  --               {
+  --                 name = 'JavaSE-1.8',
+  --                 path = '/home/neubaner/.asdf/installs/java/corretto-8.372.07.1/bin',
+  --                 default = true,
+  --               },
+  --             },
+  --           },
+  --         },
+  --       },
+  --     }
+  --   end,
+  -- },
+}
