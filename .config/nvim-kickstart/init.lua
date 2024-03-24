@@ -212,6 +212,12 @@ if not vim.loop.fs_stat(lazypath) then
 end ---@diagnostic disable-next-line: undefined-field
 vim.opt.rtp:prepend(lazypath)
 
+if vim.g.neovide then
+  vim.opt.guifont = 'IosevkaTerm Nerd Font Mono:h13,JetbrainsMono Nerd Font Mono'
+  vim.g.neovide_cursor_animation_length = 0
+  vim.g.neovide_cursor_trail_size = 0
+end
+
 -- [[ Configure and install plugins ]]
 --
 --  To check the current status of your plugins, run
