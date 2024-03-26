@@ -203,6 +203,28 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   end,
 })
 
+local setupNeovide = function()
+  if vim.g.neovide then
+    local font_size = 13
+    local fonts = {
+      'IosevkaTerm Nerd Font Mono',
+      'JetbrainsMono Nerd Font Mono',
+    }
+
+    vim.opt.guifont = table.concat(fonts, ',') .. ':h' .. font_size
+    vim.g.neovide_cursor_animation_length = 0
+    vim.g.neovide_cursor_trail_size = 0
+  end
+end
+
+vim.api.nvim_create_autocmd('UIEnter', {
+  desc = 'Setup Neovide',
+  group = vim.api.nvim_create_augroup('kickstart-neovide-setup', { clear = true }),
+  callback = function()
+    setupNeovide()
+  end,
+})
+
 -- [[ Install `lazy.nvim` plugin manager ]]
 --    See `:help lazy.nvim.txt` or https://github.com/folke/lazy.nvim for more info
 local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
@@ -211,12 +233,6 @@ if not vim.loop.fs_stat(lazypath) then
   vim.fn.system { 'git', 'clone', '--filter=blob:none', '--branch=stable', lazyrepo, lazypath }
 end ---@diagnostic disable-next-line: undefined-field
 vim.opt.rtp:prepend(lazypath)
-
-if vim.g.neovide then
-  vim.opt.guifont = 'IosevkaTerm Nerd Font Mono:h13,JetbrainsMono Nerd Font Mono'
-  vim.g.neovide_cursor_animation_length = 0
-  vim.g.neovide_cursor_trail_size = 0
-end
 
 -- [[ Configure and install plugins ]]
 --
