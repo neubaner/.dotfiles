@@ -621,6 +621,7 @@ require('lazy').setup({
         'jdtls',
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
+      require('lsp.jdtls').setup()
 
       require('mason-lspconfig').setup {
         handlers = {
