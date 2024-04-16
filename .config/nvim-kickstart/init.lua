@@ -451,6 +451,7 @@ require('lazy').setup({
       -- `neodev` configures Lua LSP for your Neovim config, runtime and plugins
       -- used for completion, annotations and signatures of Neovim apis
       { 'folke/neodev.nvim', opts = {} },
+      { 'jmederosalvarado/roslyn.nvim' },
     },
     config = function()
       -- Brief aside: **What is LSP?**
@@ -622,6 +623,11 @@ require('lazy').setup({
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
       require('lsp.jdtls').setup()
+      require('roslyn').setup {
+        roslyn_version = '4.8.0-3.23475.7',
+        capabilities = capabilities,
+        on_attach = function() end,
+      }
 
       require('mason-lspconfig').setup {
         handlers = {
@@ -882,6 +888,7 @@ require('lazy').setup({
   --  Uncomment the following line and add your plugins to `lua/custom/plugins/*.lua` to get going.
   --    For additional information, see `:help lazy.nvim-lazy.nvim-structuring-your-plugins`
   { import = 'custom.plugins' },
+  { import = 'test' },
 }, {
   ui = {
     -- If you are using a Nerd Font: set icons to an empty table which will use the
