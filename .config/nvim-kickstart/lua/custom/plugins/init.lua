@@ -7,6 +7,7 @@ return {
   {
     'mfussenegger/nvim-jdtls',
   },
+  { 'bufbuild/vim-buf' },
   -- This didn't worked out of the box for me, so I'm back to nvim-jdtls for now.
   --
   -- {
