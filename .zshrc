@@ -117,7 +117,7 @@ fi
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 type eza &> /dev/null && alias ls=eza
-alias nvim-kickstart='NVIM_APPNAME=nvim-kickstart nvim'
+alias kvim="NVIM_APPNAME=nvim-kickstart $HOME/nvim-linux64/bin/nvim"
 
 export PATH=~/.cargo/bin:~/.local/bin:$PATH
 export BROWSER=~/.scripts/browser.sh
@@ -170,3 +170,6 @@ case ":$PATH:" in
   *) export PATH="$PNPM_HOME:$PATH" ;;
 esac
 # pnpm end
+
+#dapr
+export PATH=$PATH:$HOME/dapr/
