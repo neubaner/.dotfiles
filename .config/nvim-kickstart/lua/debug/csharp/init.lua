@@ -34,11 +34,13 @@ dap.adapters.coreclr = {
   args = { '--interpreter=vscode' },
 }
 
-dap.configurations.coreclr = {
-  type = 'coreclr',
-  request = 'attach',
-  name = 'Attach .NET',
-  program = '${command:pickProcess}',
+dap.configurations.cs = {
+  {
+    type = 'coreclr',
+    request = 'attach',
+    name = 'Attach .NET',
+    processId = require('dap.utils').pick_process,
+  },
 }
 
 ---@param project Roslyn.ProjectInformation
