@@ -52,6 +52,7 @@ local function start_debug_session(project)
       request = 'launch',
       name = 'Launch' .. project.projectName,
       program = project.outputPath,
+      workspacePath = vim.fn.fnamemodify(project.solutionPath, ':h'),
       env = {},
       args = {},
     }
