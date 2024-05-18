@@ -60,9 +60,9 @@ function M.select_launch_profile(project_folder, cb)
   local launch_profiles = get_launch_profiles(project_folder)
 
   if #launch_profiles == 0 then
-    return
+    return cb(nil)
   elseif #launch_profiles == 1 then
-    return launch_profiles[1]
+    return cb(launch_profiles[1])
   end
 
   vim.ui.select(launch_profiles, {
