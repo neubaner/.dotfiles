@@ -460,6 +460,7 @@ require('lazy').setup({
       -- `neodev` configures Lua LSP for your Neovim config, runtime and plugins
       -- used for completion, annotations and signatures of Neovim apis
       { 'folke/neodev.nvim', opts = {} },
+      { 'folke/neoconf.nvim', opts = {} },
       { 'jmederosalvarado/roslyn.nvim' },
     },
     config = function()
@@ -643,11 +644,13 @@ require('lazy').setup({
         on_attach = function() end,
       }
 
+      local disabled_lsp = { 'jdtls', 'hls' }
+
       require('mason-lspconfig').setup {
         handlers = {
           function(server_name)
             -- jdtls setup is handled by a custom plugin
-            if server_name == 'jdtls' then
+            if vim.tbl_contains(disabled_lsp, server_name) then
               return
             end
 
@@ -661,6 +664,11 @@ require('lazy').setup({
         },
       }
     end,
+  },
+  {
+    'mrcjkb/haskell-tools.nvim',
+    version = '^3', -- Recommended
+    lazy = false, -- This plugin is already lazy
   },
 
   { -- Autoformat
@@ -725,11 +733,15 @@ require('lazy').setup({
       --  into multiple repos for maintenance purposes.
       'hrsh7th/cmp-nvim-lsp',
       'hrsh7th/cmp-path',
+      'onsails/lspkind.nvim',
     },
     config = function()
       -- See `:help cmp`
       local cmp = require 'cmp'
       local luasnip = require 'luasnip'
+      local lspkind = require 'lspkind'
+
+      lspkind.init {}
       luasnip.config.setup {}
 
       cmp.setup {
@@ -791,6 +803,17 @@ require('lazy').setup({
           { name = 'luasnip' },
           { name = 'path' },
         },
+        formatting = {
+          format = lspkind.cmp_format {
+            mode = 'symbol_text',
+            maxwidth = 50,
+            ellipsis_char = '...',
+            show_labelDetails = true,
+            before = function(entry, vim_item)
+              return vim_item
+            end,
+          },
+        },
       }
     end,
   },
@@ -810,6 +833,13 @@ require('lazy').setup({
 
       -- You can configure highlights by doing something like:
       vim.cmd.hi 'Comment gui=none'
+    end,
+    config = function()
+      require('tokyonight').setup {
+        on_highlights = function(highlights, colors)
+          highlights.LspCodeLens = { fg = colors.comment }
+        end,
+      }
     end,
   },
 
@@ -888,6 +918,7 @@ require('lazy').setup({
 
       ---@diagnostic disable-next-line: missing-fields
       require('nvim-treesitter.configs').setup(opts)
+      require 'custom.treesitter'
 
       -- There are additional nvim-treesitter modules that you can use to interact
       -- with nvim-treesitter. You should go explore a few and see what interests you:
@@ -946,6 +977,13 @@ require('lazy').setup({
 })
 
 require('debug.csharp').setup()
+
+vim.filetype.add {
+  extension = {
+    te = 'teika',
+    tei = 'teika',
+  },
+}
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
