@@ -1,6 +1,6 @@
 local M = {}
 
-function M.setup()
+function M.setup(opts)
   local mason_registry = require 'mason-registry'
 
   local mason_package_install_path = function(package_name)
@@ -74,17 +74,18 @@ function M.setup()
           runtimes = {
             {
               name = 'JavaSE-1.8',
-              path = vim.fn.expand '$HOME' .. '/.asdf/installs/java/corretto-8.372.07.1',
-              default = true,
+              path = vim.fn.expand '$HOME/.sdkman/candidates/java/8.0.412-amzn/',
             },
             {
               name = 'JavaSE-21',
-              path = vim.fn.expand '$HOME' .. '/.asdf/installs/java/corretto-21.0.1.12.1',
+              path = vim.fn.expand '$HOME/.sdkman/candidates/java/21.0.3-amzn/',
+              default = true,
             },
           },
         },
       },
     },
+    capabilities = opts.capabilities or vim.lsp.protocol.make_client_capabilities(),
 
     -- Language server `initializationOptions`
     -- You need to extend the `bundles` with paths to jar files
@@ -100,13 +101,11 @@ function M.setup()
   }
 
   vim.api.nvim_create_autocmd({ 'FileType' }, {
-    desc = 'Start jdtls when java related files are options',
+    desc = 'Start jdtls when java related files are open',
     group = vim.api.nvim_create_augroup('gneubaner-jdtls-filetype', { clear = true }),
     callback = function(event)
       local supported_file_types = {
         'java',
-        'gradle',
-        'groovy',
       }
 
       if vim.tbl_contains(supported_file_types, vim.bo[event.buf].filetype) then

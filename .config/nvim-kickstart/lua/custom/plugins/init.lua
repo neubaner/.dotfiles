@@ -4,9 +4,6 @@
 -- See the kickstart.nvim README for more information
 return {
   -- Plugin configuration in on ftplugin/java.lua
-  {
-    'mfussenegger/nvim-jdtls',
-  },
   { 'bufbuild/vim-buf' },
   {
     'prichrd/netrw.nvim',

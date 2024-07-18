@@ -70,7 +70,7 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git docker github rust)
+plugins=(git docker github rust dotnet gradle)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -117,7 +117,7 @@ fi
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 type eza &> /dev/null && alias ls=eza
-alias kvim="NVIM_APPNAME=nvim-kickstart $HOME/nvim-linux64/bin/nvim"
+alias kvim="NVIM_APPNAME=nvim-kickstart nvim"
 
 export PATH=~/.cargo/bin:~/.local/bin:$PATH
 export BROWSER=~/.scripts/browser.sh
@@ -162,6 +162,7 @@ export NVM_DIR="$HOME/.nvm"
 
 #.NET
 export PATH=$PATH:$HOME/.dotnet/tools
+export PATH=$PATH:$HOME/.dotnet
 
 # pnpm
 export PNPM_HOME="$HOME/.local/share/pnpm"
@@ -173,3 +174,9 @@ esac
 
 #dapr
 export PATH=$PATH:$HOME/dapr/
+
+#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
+export SDKMAN_DIR="$HOME/.sdkman"
+[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
+
+# export DOCKER_HOST=unix://$(podman info --format '{{.Host.RemoteSocket.Path}}')
