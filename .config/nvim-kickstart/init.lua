@@ -252,7 +252,7 @@ vim.opt.rtp:prepend(lazypath)
 -- NOTE: Here is where you install your plugins.
 require('lazy').setup({
   -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
-  'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
+  { 'tpope/vim-sleuth', enabled = false }, -- Detect tabstop and shiftwidth automatically
 
   -- NOTE: Plugins can also be added by using a table,
   -- with the first argument being the link and the following
@@ -462,6 +462,8 @@ require('lazy').setup({
       { 'folke/neodev.nvim', opts = {} },
       { 'folke/neoconf.nvim', opts = {} },
       { 'jmederosalvarado/roslyn.nvim' },
+      { 'neubaner/roslyn.nvim' },
+      'mfussenegger/nvim-jdtls',
     },
     config = function()
       -- Brief aside: **What is LSP?**
@@ -637,9 +639,11 @@ require('lazy').setup({
         'jdtls',
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
-      require('lsp.jdtls').setup()
+      require('lsp.jdtls').setup {
+        capabilities = capabilities,
+      }
       require('roslyn').setup {
-        roslyn_version = '4.8.0-3.23475.7',
+        roslyn_version = '4.11.0-2.24259.4+8cd5d5ea8bcba307dbe298f4f1ccf3ff0e60a650',
         capabilities = capabilities,
         on_attach = function() end,
       }
@@ -732,6 +736,7 @@ require('lazy').setup({
       --  nvim-cmp does not ship with all sources by default. They are split
       --  into multiple repos for maintenance purposes.
       'hrsh7th/cmp-nvim-lsp',
+      'hrsh7th/cmp-nvim-lsp-signature-help',
       'hrsh7th/cmp-path',
       'onsails/lspkind.nvim',
     },
@@ -829,7 +834,7 @@ require('lazy').setup({
       -- Load the colorscheme here.
       -- Like many other themes, this one has different styles, and you could load
       -- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
-      vim.cmd.colorscheme 'tokyonight-night'
+      vim.cmd.colorscheme 'tokyonight-moon'
 
       -- You can configure highlights by doing something like:
       vim.cmd.hi 'Comment gui=none'
@@ -840,6 +845,15 @@ require('lazy').setup({
           highlights.LspCodeLens = { fg = colors.comment }
         end,
       }
+    end,
+  },
+  {
+    'AlexvZyl/nordic.nvim',
+    enabled = false,
+    lazy = false,
+    priority = 1000,
+    config = function()
+      require('nordic').load()
     end,
   },
 
@@ -918,7 +932,7 @@ require('lazy').setup({
 
       ---@diagnostic disable-next-line: missing-fields
       require('nvim-treesitter.configs').setup(opts)
-      require 'custom.treesitter'
+      -- require 'custom.treesitter'
 
       -- There are additional nvim-treesitter modules that you can use to interact
       -- with nvim-treesitter. You should go explore a few and see what interests you:
@@ -934,6 +948,17 @@ require('lazy').setup({
     dependencies = { 'nvim-lua/plenary.nvim' },
   },
 
+  {
+    'xiyaowong/transparent.nvim',
+    config = function() end,
+  },
+
+  {
+    'ray-x/lsp_signature.nvim',
+    event = 'VeryLazy',
+    opts = {},
+  },
+
   -- The following two comments only work if you have downloaded the kickstart repo, not just copy pasted the
   -- init.lua. If you want these files, they are in the repository, so you can just download them and
   -- place them in the correct locations.
@@ -946,6 +971,33 @@ require('lazy').setup({
   require 'kickstart.plugins.debug',
   require 'kickstart.plugins.indent_line',
   require 'kickstart.plugins.lint',
+  {
+    'stevearc/oil.nvim',
+    opts = {
+      default_file_explorer = true,
+      view_options = {
+        show_hidden = true,
+      },
+    },
+    keys = {
+      { '-', '<CMD>Oil<CR>', desc = 'Open parent directory', mode = 'n' },
+      {
+        '<leader>-',
+        function()
+          require('oil').toggle_float()
+        end,
+        desc = 'Open parent directory',
+        mode = 'n',
+      },
+    },
+    -- Optional dependencies
+    dependencies = { 'nvim-tree/nvim-web-devicons' },
+  },
+  {
+    'folke/trouble.nvim',
+    dependencies = { 'nvim-tree/nvim-web-devicons' },
+    opts = {},
+  },
 
   -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
   --    This is the easiest way to modularize your config.
