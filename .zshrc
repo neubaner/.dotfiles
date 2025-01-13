@@ -70,7 +70,7 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git docker github rust dotnet gradle)
+plugins=(git docker github rust dotnet gradle github)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -179,4 +179,6 @@ export PATH=$PATH:$HOME/dapr/
 export SDKMAN_DIR="$HOME/.sdkman"
 [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
 
-# export DOCKER_HOST=unix://$(podman info --format '{{.Host.RemoteSocket.Path}}')
+#vsdbg
+export PATH=$PATH:$HOME/.vsdbg/
+

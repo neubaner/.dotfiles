@@ -75,6 +75,7 @@ return {
         },
       },
     }
+    dap.set_log_level 'DEBUG'
 
     -- Toggle to see last session result. Without this, you can't see session output in case of unhandled exception.
     vim.keymap.set('n', '<F5>', dapui.toggle, { desc = 'Debug: See last session result.' })
@@ -82,5 +83,23 @@ return {
     dap.listeners.after.event_initialized['dapui_config'] = dapui.open
     dap.listeners.before.event_terminated['dapui_config'] = dapui.close
     dap.listeners.before.event_exited['dapui_config'] = dapui.close
+
+    dap.adapters.php = {
+      type = 'executable',
+      command = 'node',
+      args = { '/home/neubaner/git/vscode-php-debug/out/phpDebug.js' },
+    }
+
+    dap.configurations.php = {
+      {
+        type = 'php',
+        request = 'launch',
+        name = 'Listen for Xdebug',
+        port = 9003,
+        pathMappings = {
+          ['/app'] = '${workspaceFolder}',
+        },
+      },
+    }
   end,
 }

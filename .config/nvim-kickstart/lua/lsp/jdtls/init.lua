@@ -11,13 +11,10 @@ function M.setup(opts)
   -- TODO: Change path based on windows
   local path_separator = '/'
 
-  local jdk_path = mason_package_install_path 'openjdk-17'
   local jdtls_path = mason_package_install_path 'jdtls'
   local lombok_path = mason_package_install_path 'lombok-nightly'
 
-  -- TODO: Create a path join function
-  local java_home = vim.fn.glob(jdk_path .. path_separator .. 'jdk-17*')
-  local java_exe = java_home .. path_separator .. 'bin' .. path_separator .. 'java'
+  local java_exe = vim.fn.expand '$HOME/.sdkman/candidates/java/21.0.3-amzn/bin/java'
 
   local equinox_launcher = vim.fn.glob(jdtls_path .. path_separator .. 'plugins' .. path_separator .. 'org.eclipse.equinox.launcher_*.jar')
   local shared_configuration_path = vim.fn.stdpath 'cache' .. path_separator .. 'jdtls_share_configuration'
@@ -96,23 +93,18 @@ function M.setup(opts)
     -- If you don't plan on using the debugger or other eclipse.jdt.ls plugins you can remove this
     -- TODO: Add dap and test runner bundles
     init_options = {
-      bundles = {},
+      bundles = vim.list_extend({
+        vim.fn.glob('~/git/java-debug/com.microsoft.java.debug.plugin/target/com.microsoft.java.debug.plugin-*.jar', true),
+      }, vim.split(vim.fn.glob('~/git/vscode-java-test/server/*.jar', true), '\n')),
     },
   }
 
   vim.api.nvim_create_autocmd({ 'FileType' }, {
     desc = 'Start jdtls when java related files are open',
+    pattern = 'java',
     group = vim.api.nvim_create_augroup('gneubaner-jdtls-filetype', { clear = true }),
-    callback = function(event)
-      local supported_file_types = {
-        'java',
-      }
-
-      if vim.tbl_contains(supported_file_types, vim.bo[event.buf].filetype) then
-        -- This starts a new client & server,
-        -- or attaches to an existing client & server depending on the `root_dir`.
-        require('jdtls').start_or_attach(config)
-      end
+    callback = function()
+      require('jdtls').start_or_attach(config)
     end,
   })
 end
