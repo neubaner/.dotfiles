@@ -1,205 +1,43 @@
---[[
-
-=====================================================================
-==================== READ THIS BEFORE CONTINUING ====================
-=====================================================================
-========                                    .-----.          ========
-========         .----------------------.   | === |          ========
-========         |.-""""""""""""""""""-.|   |-----|          ========
-========         ||                    ||   | === |          ========
-========         ||   KICKSTART.NVIM   ||   |-----|          ========
-========         ||                    ||   | === |          ========
-========         ||                    ||   |-----|          ========
-========         ||:Tutor              ||   |:::::|          ========
-========         |'-..................-'|   |____o|          ========
-========         `"")----------------(""`   ___________      ========
-========        /::::::::::|  |::::::::::\  \ no mouse \     ========
-========       /:::========|  |==hjkl==:::\  \ required \    ========
-========      '""""""""""""'  '""""""""""""'  '""""""""""'   ========
-========                                                     ========
-=====================================================================
-=====================================================================
-
-What is Kickstart?
-
-  Kickstart.nvim is *not* a distribution.
-
-  Kickstart.nvim is a starting point for your own configuration.
-    The goal is that you can read every line of code, top-to-bottom, understand
-    what your configuration is doing, and modify it to suit your needs.
-
-    Once you've done that, you can start exploring, configuring and tinkering to
-    make Neovim your own! That might mean leaving Kickstart just the way it is for a while
-    or immediately breaking it into modular pieces. It's up to you!
-
-    If you don't know anything about Lua, I recommend taking some time to read through
-    a guide. One possible example which will only take 10-15 minutes:
-      - https://learnxinyminutes.com/docs/lua/
-
-    After understanding a bit more about Lua, you can use `:help lua-guide` as a
-    reference for how Neovim integrates Lua.
-    - :help lua-guide
-    - (or HTML version): https://neovim.io/doc/user/lua-guide.html
-
-Kickstart Guide:
-
-  TODO: The very first thing you should do is to run the command `:Tutor` in Neovim.
-
-    If you don't know what this means, type the following:
-      - <escape key>
-      - :
-      - Tutor
-      - <enter key>
-
-    (If you already know the Neovim basics, you can skip this step.)
-
-  Once you've completed that, you can continue working through **AND READING** the rest
-  of the kickstart init.lua.
-
-  Next, run AND READ `:help`.
-    This will open up a help window with some basic information
-    about reading, navigating and searching the builtin help documentation.
-
-    This should be the first place you go to look when you're stuck or confused
-    with something. It's one of my favorite Neovim features.
-
-    MOST IMPORTANTLY, we provide a keymap "<space>sh" to [s]earch the [h]elp documentation,
-    which is very useful when you're not exactly sure of what you're looking for.
-
-  I have left several `:help X` comments throughout the init.lua
-    These are hints about where to find more information about the relevant settings,
-    plugins or Neovim features used in Kickstart.
-
-   NOTE: Look for lines like this
-
-    Throughout the file. These are for you, the reader, to help you understand what is happening.
-    Feel free to delete them once you know what you're doing, but they should serve as a guide
-    for when you are first encountering a few different constructs in your Neovim config.
-
-If you experience any errors while trying to install kickstart, run `:checkhealth` for more info.
-
-I hope you enjoy your Neovim journey,
-- TJ
-
-P.S. You can delete this when you're done too. It's your config now! :)
---]]
-
--- Set <space> as the leader key
--- See `:help mapleader`
---  NOTE: Must happen before plugins are loaded (otherwise wrong leader will be used)
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
-
--- Set to true if you have a Nerd Font installed
 vim.g.have_nerd_font = true
-
--- [[ Setting options ]]
--- See `:help vim.opt`
--- NOTE: You can change these options as you wish!
---  For more options, you can see `:help option-list`
-
--- Make line numbers default
 vim.opt.number = true
--- You can also add relative line numbers, to help with jumping.
---  Experiment for yourself to see if you like it!
 vim.opt.relativenumber = true
-
--- Enable mouse mode, can be useful for resizing splits for example!
 vim.opt.mouse = 'a'
-
--- Don't show the mode, since it's already in the status line
 vim.opt.showmode = false
-
--- Sync clipboard between OS and Neovim.
---  Remove this option if you want your OS clipboard to remain independent.
---  See `:help 'clipboard'`
-
--- Enable break indent
 vim.opt.breakindent = true
-
--- Save undo history
 vim.opt.undofile = true
-
--- Case-insensitive searching UNLESS \C or one or more capital letters in the search term
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
-
--- Keep signcolumn on by default
 vim.opt.signcolumn = 'yes'
-
--- Decrease update time
 vim.opt.updatetime = 250
-
--- Decrease mapped sequence wait time
--- Displays which-key popup sooner
 vim.opt.timeoutlen = 300
-
--- Configure how new splits should be opened
 vim.opt.splitright = true
 vim.opt.splitbelow = true
-
--- Sets how neovim will display certain whitespace characters in the editor.
---  See `:help 'list'`
---  and `:help 'listchars'`
 vim.opt.list = true
 vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
-
--- Preview substitutions live, as you type!
 vim.opt.inccommand = 'split'
-
--- Show which line your cursor is on
 vim.opt.cursorline = true
-
--- Minimal number of screen lines to keep above and below the cursor.
 vim.opt.scrolloff = 10
-
--- [[ Basic Keymaps ]]
---  See `:help vim.keymap.set()`
-
--- Set highlight on search, but clear on pressing <Esc> in normal mode
+vim.o.termguicolors = true
 vim.opt.hlsearch = true
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
-
--- Set tab stops
 vim.opt.tabstop = 4
 vim.opt.shiftwidth = 4
 vim.opt.expandtab = true
 
--- Diagnostic keymaps
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous [D]iagnostic message' })
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next [D]iagnostic message' })
 vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Show diagnostic [E]rror messages' })
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
 
--- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
--- for people to discover. Otherwise, you normally need to press <C-\><C-n>, which
--- is not what someone will guess without a bit more experience.
---
--- NOTE: This won't work in all terminal emulators/tmux/etc. Try your own mapping
--- or just use <C-\><C-n> to exit terminal mode
 vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
 
--- TIP: Disable arrow keys in normal mode
--- vim.keymap.set('n', '<left>', '<cmd>echo "Use h to move!!"<CR>')
--- vim.keymap.set('n', '<right>', '<cmd>echo "Use l to move!!"<CR>')
--- vim.keymap.set('n', '<up>', '<cmd>echo "Use k to move!!"<CR>')
--- vim.keymap.set('n', '<down>', '<cmd>echo "Use j to move!!"<CR>')
-
--- Keybinds to make split navigation easier.
---  Use CTRL+<hjkl> to switch between windows
---
---  See `:help wincmd` for a list of all window commands
 vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left window' })
 vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
 vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
 
--- [[ Basic Autocommands ]]
---  See `:help lua-guide-autocommands`
-
--- Highlight when yanking (copying) text
---  Try it with `yap` in normal mode
---  See `:help vim.highlight.on_yank()`
 vim.api.nvim_create_autocmd('TextYankPost', {
   desc = 'Highlight when yanking (copying) text',
   group = vim.api.nvim_create_augroup('kickstart-highlight-yank', { clear = true }),
@@ -252,7 +90,7 @@ vim.opt.rtp:prepend(lazypath)
 -- NOTE: Here is where you install your plugins.
 require('lazy').setup({
   -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
-  { 'tpope/vim-sleuth', enabled = false }, -- Detect tabstop and shiftwidth automatically
+  { 'tpope/vim-sleuth', enabled = true }, -- Detect tabstop and shiftwidth automatically
 
   -- NOTE: Plugins can also be added by using a table,
   -- with the first argument being the link and the following
@@ -309,13 +147,17 @@ require('lazy').setup({
     config = function() -- This is the function that runs, AFTER loading
       require('which-key').setup()
 
-      -- Document existing key chains
-      require('which-key').register {
-        ['<leader>c'] = { name = '[C]ode', _ = 'which_key_ignore' },
-        ['<leader>d'] = { name = '[D]ocument', _ = 'which_key_ignore' },
-        ['<leader>r'] = { name = '[R]ename', _ = 'which_key_ignore' },
-        ['<leader>s'] = { name = '[S]earch', _ = 'which_key_ignore' },
-        ['<leader>w'] = { name = '[W]orkspace', _ = 'which_key_ignore' },
+      require('which-key').add {
+        { '<leader>c', group = '[C]ode' },
+        { '<leader>c_', hidden = true },
+        { '<leader>d', group = '[D]ocument' },
+        { '<leader>d_', hidden = true },
+        { '<leader>r', group = '[R]ename' },
+        { '<leader>r_', hidden = true },
+        { '<leader>s', group = '[S]earch' },
+        { '<leader>s_', hidden = true },
+        { '<leader>w', group = '[W]orkspace' },
+        { '<leader>w_', hidden = true },
       }
     end,
   },
@@ -447,6 +289,7 @@ require('lazy').setup({
           registries = {
             'github:mason-org/mason-registry',
             'github:nvim-java/mason-registry',
+            'github:Crashdummyy/mason-registry',
           },
         },
       },
@@ -459,11 +302,30 @@ require('lazy').setup({
 
       -- `neodev` configures Lua LSP for your Neovim config, runtime and plugins
       -- used for completion, annotations and signatures of Neovim apis
-      { 'folke/neodev.nvim', opts = {} },
+      {
+        'folke/lazydev.nvim',
+        ft = 'lua',
+        dependencies = {
+          { 'Bilal2453/luvit-meta', lazy = true }, -- optional `vim.uv` typings
+        },
+        opts = {
+          library = {
+            { path = 'luvit-meta/library', words = { 'vim%.uv' } },
+          },
+        },
+      },
       { 'folke/neoconf.nvim', opts = {} },
-      { 'jmederosalvarado/roslyn.nvim' },
-      { 'neubaner/roslyn.nvim' },
+      -- {
+      --   dir = '~/git/roslyn.nvim/',
+      -- },
+      {
+        'seblj/roslyn.nvim',
+        ft = 'cs',
+      },
       'mfussenegger/nvim-jdtls',
+      {
+        dir = '~/personal/rzls.nvim',
+      },
     },
     config = function()
       -- Brief aside: **What is LSP?**
@@ -635,17 +497,34 @@ require('lazy').setup({
 
         -- Java packages
         'lombok-nightly',
-        'openjdk-17',
+        -- 'openjdk-17',
         'jdtls',
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
       require('lsp.jdtls').setup {
         capabilities = capabilities,
       }
+
+      -- local rzls_path = vim.fs.joinpath(require('mason-registry').get_package('rzls'):get_install_path(), 'libexec')
+      local rzls_path = '/home/neubaner/git/razor/artifacts/LanguageServer/Debug/net8.0/linux-x64'
+
       require('roslyn').setup {
-        roslyn_version = '4.11.0-2.24259.4+8cd5d5ea8bcba307dbe298f4f1ccf3ff0e60a650',
+        filewatching = true,
         capabilities = capabilities,
-        on_attach = function() end,
+        args = {
+          '--logLevel=Information',
+          '--extensionLogDirectory=' .. vim.fs.dirname(vim.lsp.get_log_path()),
+          '--razorSourceGenerator=' .. vim.fs.joinpath(rzls_path, 'Microsoft.CodeAnalysis.Razor.Compiler.dll'),
+          '--razorDesignTimePath=' .. vim.fs.joinpath(rzls_path, 'Targets', 'Microsoft.NET.Sdk.Razor.DesignTime.targets'),
+        },
+        config = {
+          handlers = require 'rzls.roslyn_handlers',
+        },
+      }
+
+      require('rzls').setup {
+        capabilities = capabilities,
+        -- path = vim.fs.joinpath(rzls_path, 'rzls'),
       }
 
       local disabled_lsp = { 'jdtls', 'hls' }
@@ -677,29 +556,57 @@ require('lazy').setup({
 
   { -- Autoformat
     'stevearc/conform.nvim',
-    opts = {
-      notify_on_error = false,
-      format_on_save = function(bufnr)
-        -- Disable "format_on_save lsp_fallback" for languages that don't
-        -- have a well standardized coding style. You can add additional
-        -- languages here or re-enable it for the disabled ones.
-        local disable_filetypes = { c = true, cpp = true }
-        return {
-          timeout_ms = 500,
-          lsp_fallback = not disable_filetypes[vim.bo[bufnr].filetype],
-        }
-      end,
-      formatters_by_ft = {
-        lua = { 'stylua' },
-        proto = { 'buf' },
-        -- Conform can also run multiple formatters sequentially
-        -- python = { "isort", "black" },
-        --
-        -- You can use a sub-list to tell conform to run *until* a formatter
-        -- is found.
-        -- javascript = { { "prettierd", "prettier" } },
-      },
-    },
+    opts = function()
+      return {
+        notify_on_error = false,
+        format_on_save = function(bufnr)
+          -- Disable "format_on_save lsp_fallback" for languages that don't
+          -- have a well standardized coding style. You can add additional
+          -- languages here or re-enable it for the disabled ones.
+          local disable_filetypes = { c = true, cpp = true, razor = true, java = false }
+          return {
+            timeout_ms = 5000,
+            lsp_fallback = not disable_filetypes[vim.bo[bufnr].filetype],
+          }
+        end,
+        formatters_by_ft = {
+          lua = { 'stylua' },
+          proto = { 'buf' },
+          hcl = { 'hcl' },
+          markdown = { 'markdownlint' },
+          terraform = { 'hcl' },
+          php = { 'pint' },
+          -- java = { 'spotless' },
+          ['terraform-vars'] = { 'hcl' },
+          -- Conform can also run multiple formatters sequentially
+          -- python = { "isort", "black" },
+          --
+          -- You can use a sub-list to tell conform to run *until* a formatter
+          -- is found.
+          -- javascript = { { "prettierd", "prettier" } },
+        },
+        log_level = vim.log.levels.DEBUG,
+        formatters = {
+          spotless = {
+            condition = function(self, ctx)
+              return vim.bo[ctx.buf].filetype == 'java'
+            end,
+            cwd = vim.print(require('conform.util').root_file { '.git', 'mvnw', 'gradlew' }),
+            command = './gradlew',
+            args = function(self, ctx)
+              return {
+                'spotlessApply',
+                '--quiet',
+                '-PspotlessIdeHook=' .. ctx.filename,
+                '-PspotlessIdeHookUseStdIn',
+                '-PspotlessIdeHookUseStdOut',
+              }
+            end,
+            stdin = true,
+          },
+        },
+      }
+    end,
   },
 
   { -- Autocompletion
@@ -738,13 +645,16 @@ require('lazy').setup({
       'hrsh7th/cmp-nvim-lsp',
       'hrsh7th/cmp-nvim-lsp-signature-help',
       'hrsh7th/cmp-path',
+      { 'petertriho/cmp-git', opts = {} },
       'onsails/lspkind.nvim',
+      'brenoprata10/nvim-highlight-colors',
     },
     config = function()
       -- See `:help cmp`
       local cmp = require 'cmp'
       local luasnip = require 'luasnip'
       local lspkind = require 'lspkind'
+      local highlight_colors = require 'nvim-highlight-colors'
 
       lspkind.init {}
       luasnip.config.setup {}
@@ -807,17 +717,28 @@ require('lazy').setup({
           { name = 'nvim_lsp' },
           { name = 'luasnip' },
           { name = 'path' },
+          { name = 'git' },
         },
         formatting = {
-          format = lspkind.cmp_format {
-            mode = 'symbol_text',
-            maxwidth = 50,
-            ellipsis_char = '...',
-            show_labelDetails = true,
-            before = function(entry, vim_item)
-              return vim_item
-            end,
-          },
+          format = function(entry, item)
+            local color_item = highlight_colors.format(entry, { kind = item.kind })
+            item = lspkind.cmp_format {
+              mode = 'symbol_text',
+              maxwidth = 50,
+              ellipsis_char = '...',
+              show_labelDetails = true,
+              before = function(_, vim_item)
+                return vim_item
+              end,
+            }(entry, item)
+
+            if color_item.abbr_hl_group then
+              item.kind_hl_group = color_item.abbr_hl_group
+              item.kind = color_item.abbr
+            end
+
+            return item
+          end,
         },
       }
     end,
@@ -915,7 +836,7 @@ require('lazy').setup({
     'nvim-treesitter/nvim-treesitter',
     build = ':TSUpdate',
     opts = {
-      ensure_installed = { 'bash', 'c', 'html', 'lua', 'markdown', 'vim', 'vimdoc' },
+      ensure_installed = { 'bash', 'c', 'html', 'lua', 'markdown', 'vim', 'vimdoc', 'razor' },
       -- Autoinstall languages that are not installed
       auto_install = true,
       highlight = {
@@ -929,6 +850,16 @@ require('lazy').setup({
     },
     config = function(_, opts)
       -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
+
+      ---@type ParserInfo
+      require('nvim-treesitter.parsers').get_parser_configs().razor = {
+        install_info = {
+          url = 'https://github.com/tris203/tree-sitter-razor',
+          files = { 'src/parser.c', 'src/scanner.c' },
+          revision = '6305416578d59861ae85300546b4c3bac839ea9e',
+        },
+        filetype = 'razor',
+      }
 
       ---@diagnostic disable-next-line: missing-fields
       require('nvim-treesitter.configs').setup(opts)
@@ -945,7 +876,30 @@ require('lazy').setup({
   {
     'ThePrimeagen/harpoon',
     branch = 'harpoon2',
-    dependencies = { 'nvim-lua/plenary.nvim' },
+    dependencies = {
+      'nvim-lua/plenary.nvim',
+      'nvim-telescope/telescope.nvim',
+    },
+    config = function()
+      local harpoon = require 'harpoon'
+
+      harpoon:setup {}
+
+      vim.keymap.set('n', '<leader>a', function()
+        harpoon:list():add()
+      end)
+      vim.keymap.set('n', '<C-e>', function()
+        harpoon.ui:toggle_quick_menu(harpoon:list())
+      end)
+
+      for idx, key in ipairs { 'j', 'k', 'l', ';' } do
+        vim.keymap.set('n', string.format('<space>%s', key), function()
+          harpoon:list():select(idx)
+        end, {
+          desc = 'Harpoon select ' .. idx,
+        })
+      end
+    end,
   },
 
   {
@@ -955,6 +909,7 @@ require('lazy').setup({
 
   {
     'ray-x/lsp_signature.nvim',
+    enabled = true,
     event = 'VeryLazy',
     opts = {},
   },
@@ -973,10 +928,71 @@ require('lazy').setup({
   require 'kickstart.plugins.lint',
   {
     'stevearc/oil.nvim',
+    lazy = false,
+    ---@type oil.Config
+    ---@diagnostic disable-next-line: missing-fields
     opts = {
       default_file_explorer = true,
+      ---@diagnostic disable-next-line: missing-fields
       view_options = {
         show_hidden = true,
+      },
+      keymaps = {
+        ['gg'] = {
+          desc = 'Navigate down recursively',
+          callback = function()
+            local function get_leaf_path(parent)
+              local children = {}
+              for child in vim.fs.dir(parent) do
+                table.insert(children, vim.fs.joinpath(parent, child))
+              end
+
+              if #children == 1 and vim.fn.isdirectory(children[1]) == 1 then
+                return get_leaf_path(children[1])
+              end
+
+              return parent
+            end
+
+            local oil = require 'oil'
+            local current_entry = oil.get_cursor_entry()
+
+            if current_entry == nil or current_entry.type ~= 'directory' then
+              oil.select()
+            end
+
+            local leaf_path = get_leaf_path(vim.fs.joinpath(oil.get_current_dir(), oil.get_cursor_entry().parsed_name))
+            oil.open(leaf_path)
+          end,
+        },
+        -- TODO: Navigate up recursively
+        -- ['__'] = {
+        --   desc = 'Navigate up recursively',
+        --   callback = function()
+        --     local function get_leaf_path(parent)
+        --       local children = {}
+        --       for child in vim.fs.dir(parent) do
+        --         table.insert(children, vim.fs.joinpath(parent, child))
+        --       end
+        --
+        --       if #children == 1 and vim.fn.isdirectory(children[1]) == 1 then
+        --         return get_leaf_path(children[1])
+        --       end
+        --
+        --       return parent
+        --     end
+        --
+        --     local oil = require 'oil'
+        --     local current_entry = oil.get_cursor_entry()
+        --
+        --     if current_entry == nil or current_entry.type ~= 'directory' then
+        --       oil.select()
+        --     end
+        --
+        --     local leaf_path = get_leaf_path(vim.fs.joinpath(oil.get_current_dir(), oil.get_cursor_entry().parsed_name))
+        --     oil.open(leaf_path)
+        --   end,
+        -- },
       },
     },
     keys = {
@@ -998,7 +1014,156 @@ require('lazy').setup({
     dependencies = { 'nvim-tree/nvim-web-devicons' },
     opts = {},
   },
+  {
+    'MeanderingProgrammer/markdown.nvim',
+    enabled = false,
+    main = 'render-markdown',
+    opts = {},
+    name = 'render-markdown', -- Only needed if you have another plugin named markdown.nvim
+    dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-tree/nvim-web-devicons' }, -- if you prefer nvim-web-devicons
+  },
+  {
+    'OXY2DEV/markview.nvim',
+    enabled = true,
+    lazy = false,
+    dependencies = {
+      'nvim-treesitter/nvim-treesitter',
+      'nvim-tree/nvim-web-devicons',
+    },
+  },
+  {
+    'pwntester/octo.nvim',
+    dependencies = {
+      'nvim-lua/plenary.nvim',
+      'nvim-telescope/telescope.nvim',
+      'nvim-tree/nvim-web-devicons',
+    },
+    opts = {},
+  },
+  {
+    'christoomey/vim-tmux-navigator',
+  },
+  {
+    'ramojus/mellifluous.nvim',
+    enabled = false,
+    priority = 1000, -- Make sure to load this before all the other start plugins.
+    config = function()
+      require('mellifluous').setup {}
+      vim.cmd 'colorscheme mellifluous'
+    end,
+  },
+  {
+    'https://github.com/Samonitari/tree-sitter-caddy',
+    dependencies = {
+      'nvim-treesitter/nvim-treesitter',
+      opts = function(_, opts)
+        require('nvim-treesitter.parsers').get_parser_configs().caddy = {
+          install_info = {
+            url = 'https://github.com/Samonitari/tree-sitter-caddy',
+            files = { 'src/parser.c', 'src/scanner.c' },
+            branch = 'master',
+          },
+          filetype = 'caddy',
+        }
 
+        opts.ensure_installed = opts.ensure_installed or {}
+        vim.list_extend(opts.ensure_installed, { 'caddy' })
+        vim.filetype.add {
+          pattern = {
+            ['Caddyfile'] = 'caddy',
+          },
+        }
+      end,
+    },
+    event = 'BufRead Caddyfile',
+  },
+  {
+    'https://github.com/tris203/tree-sitter-razor',
+    enabled = false,
+    dependencies = {
+      'nvim-treesitter/nvim-treesitter',
+      opts = function(_, opts)
+        ---@type ParserInfo
+        require('nvim-treesitter.parsers').get_parser_configs().razor = {
+          install_info = {
+            url = 'https://github.com/tris203/tree-sitter-razor',
+            files = { 'src/parser.c', 'src/scanner.c' },
+            branch = 'main',
+          },
+          filetype = 'razor',
+        }
+
+        opts.ensure_installed = opts.ensure_installed or {}
+        table.insert(opts.ensure_installed, 'razor')
+      end,
+    },
+  },
+  {
+    'rcarriga/nvim-notify',
+    priority = 1000,
+    init = function()
+      vim.notify = require 'notify'
+    end,
+  },
+  'AndrewRadev/bufferize.vim',
+  { 'brenoprata10/nvim-highlight-colors', opts = {} },
+  {
+    'folke/noice.nvim',
+    enabled = false,
+    event = 'VeryLazy',
+    opts = {
+      lsp = {
+        -- override markdown rendering so that **cmp** and other plugins use **Treesitter**
+        override = {
+          ['vim.lsp.util.convert_input_to_markdown_lines'] = true,
+          ['vim.lsp.util.stylize_markdown'] = true,
+          ['cmp.entry.get_documentation'] = true, -- requires hrsh7th/nvim-cmp
+        },
+      },
+      -- you can enable a preset for easier configuration
+      presets = {
+        bottom_search = true, -- use a classic bottom cmdline for search
+        command_palette = true, -- position the cmdline and popupmenu together
+
+        long_message_to_split = true, -- long messages will be sent to a split
+        inc_rename = false, -- enables an input dialog for inc-rename.nvim
+        lsp_doc_border = false, -- add a border to hover docs and signature help
+      },
+    },
+    dependencies = {
+      -- if you lazy-load any plugin below, make sure to add proper `module="..."` entries
+      'MunifTanjim/nui.nvim',
+      -- OPTIONAL:
+      --   `nvim-notify` is only needed, if you want to use the notification view.
+      --   If not available, we use `mini` as the fallback
+      'rcarriga/nvim-notify',
+    },
+  },
+  {
+    'GustavEikaas/easy-dotnet.nvim',
+    ft = 'cs',
+    dependencies = { 'nvim-lua/plenary.nvim', 'nvim-telescope/telescope.nvim' },
+    config = function()
+      require('easy-dotnet').setup {
+        get_sdk_path = function()
+          local sdk_version = vim.system({ 'dotnet', '--version' }):wait().stdout:gsub('\r', ''):gsub('\n', '')
+          return vim.fs.joinpath(vim.fn.expand '$HOME', '.dotnet', 'sdk', sdk_version)
+        end,
+      }
+    end,
+    opts = {},
+  },
+  {
+    'ficcdaf/ashen.nvim',
+    enabled = false,
+    lazy = false,
+    priority = 1000,
+    init = function()
+      vim.cmd.colorscheme 'ashen'
+      require('ashen').load()
+    end,
+    opts = {},
+  },
   -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
   --    This is the easiest way to modularize your config.
   --
@@ -1029,6 +1194,7 @@ require('lazy').setup({
 })
 
 require('debug.csharp').setup()
+require 'debug.csharp.docker'
 
 vim.filetype.add {
   extension = {
@@ -1036,6 +1202,42 @@ vim.filetype.add {
     tei = 'teika',
   },
 }
+
+vim.api.nvim_create_user_command('RazorReload', function()
+  require('plenary.reload').reload_module('rzls.utils', false)
+end, {})
+
+vim.treesitter.language.register('markdown', 'octo')
+
+vim.keymap.set('n', '<leader>ct', function()
+  require('nvim-treesitter.query').invalidate_query_cache 'c_sharp'
+  vim.cmd [[InspectTree]]
+end)
+
+vim.keymap.set('n', '<leader>tb', function()
+  local generate_result = vim.system({ 'tree-sitter', 'generate' }, { text = true }):wait()
+  if generate_result.code ~= 0 then
+    vim.notify('Failed to generate tree-sitter parser\n' .. generate_result.stderr, vim.log.levels.ERROR, {
+      title = 'tree-sitter builder',
+    })
+    return
+  end
+
+  vim.cmd [[TSInstall razor]]
+  vim.cmd [[TSInstall razor]]
+end, {
+  desc = 'Build tree sitter and install',
+})
+
+vim.api.nvim_create_user_command('LspStopAll', function()
+  local lsp_clients = vim.lsp.get_clients()
+
+  for _, lsp_client in ipairs(lsp_clients) do
+    lsp_client.stop()
+  end
+end, {})
+
+vim.lsp.set_log_level 'DEBUG'
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
