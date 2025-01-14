@@ -34,7 +34,6 @@ return {
         'seblj/roslyn.nvim',
         ft = 'cs',
       },
-      'mfussenegger/nvim-jdtls',
       {
         dir = '~/personal/rzls.nvim',
       },
@@ -104,9 +103,6 @@ return {
         'jdtls',
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
-      require('lsp.jdtls').setup {
-        capabilities = capabilities,
-      }
 
       local rzls_path = vim.fs.joinpath(require('mason-registry').get_package('rzls'):get_install_path(), 'libexec')
 
@@ -157,5 +153,6 @@ return {
     'mrcjkb/haskell-tools.nvim',
     version = '^3',
   },
+  'mfussenegger/nvim-jdtls',
   { 'numToStr/Comment.nvim', opts = {} },
 }
