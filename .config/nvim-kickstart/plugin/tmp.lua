@@ -1,5 +1,4 @@
-require('debug.csharp').setup()
-require 'debug.csharp.docker'
+require('csharp').load()
 
 vim.api.nvim_create_user_command('RazorReload', function()
   require('plenary.reload').reload_module('rzls.utils', false)

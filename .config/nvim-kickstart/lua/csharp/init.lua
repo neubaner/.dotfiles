@@ -48,7 +48,7 @@ dap.configurations.cs = {
 ---@param project Roslyn.ProjectInformation
 local function start_debug_session(project)
   local project_directory = vim.fn.fnamemodify(project.projectPath, ':h')
-  require('debug.csharp.launch-profile').select_launch_profile(project_directory, function(launch_profile)
+  require('csharp.launch-profile').select_launch_profile(project_directory, function(launch_profile)
     local config = {
       type = 'coreclr',
       request = 'launch',
@@ -84,7 +84,7 @@ local function start_debug_session(project)
   end)
 end
 
-function M.setup()
+function M.load()
   vim.api.nvim_create_user_command('CSharpDebug', function()
     local co = coroutine.create(function()
       local buf = vim.api.nvim_get_current_buf()
