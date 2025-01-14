@@ -40,7 +40,7 @@ return {
     },
     config = function()
       vim.api.nvim_create_autocmd('LspAttach', {
-        group = vim.api.nvim_create_augroup('kickstart-lsp-attach', { clear = true }),
+        group = vim.api.nvim_create_augroup('lsp-attach', { clear = true }),
         callback = function(event)
           local map = function(keys, func, desc)
             vim.keymap.set('n', keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc })
@@ -127,9 +127,10 @@ return {
   },
   {
     'seblj/roslyn.nvim',
-    ft = 'cs',
+    ft = { 'cs', 'razor' },
     dependencies = {
       { dir = '~/personal/rzls.nvim' },
+      'williamboman/mason.nvim',
     },
     config = function()
       local capabilities = lsp_capabilities()
