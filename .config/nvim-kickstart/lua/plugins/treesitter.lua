@@ -43,7 +43,6 @@ return {
   },
   {
     'https://github.com/tris203/tree-sitter-razor',
-    enabled = true,
     dependencies = {
       'nvim-treesitter/nvim-treesitter',
       opts = function(_, opts)

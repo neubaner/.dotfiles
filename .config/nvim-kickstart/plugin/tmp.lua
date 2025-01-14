@@ -21,7 +21,6 @@ vim.keymap.set('n', '<leader>tb', function()
   end
 
   vim.cmd [[TSInstall razor]]
-  vim.cmd [[TSInstall razor]]
 end, {
   desc = 'Build tree sitter and install',
 })
@@ -30,7 +29,7 @@ vim.api.nvim_create_user_command('LspStopAll', function()
   local lsp_clients = vim.lsp.get_clients()
 
   for _, lsp_client in ipairs(lsp_clients) do
-    lsp_client.stop()
+    lsp_client:stop()
   end
 end, {})
 
