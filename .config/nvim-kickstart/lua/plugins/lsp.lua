@@ -1,3 +1,8 @@
+local function lsp_capabilities()
+  local capabilities = vim.lsp.protocol.make_client_capabilities()
+  return vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
+end
+
 ---@type LazySpec[]
 return {
   {
@@ -15,7 +20,6 @@ return {
       },
       'williamboman/mason-lspconfig.nvim',
       'WhoIsSethDaniel/mason-tool-installer.nvim',
-
       { 'j-hui/fidget.nvim', opts = {} },
       {
         'folke/lazydev.nvim',
@@ -30,10 +34,6 @@ return {
         },
       },
       { 'folke/neoconf.nvim', opts = {} },
-      {
-        'seblj/roslyn.nvim',
-        ft = 'cs',
-      },
       {
         dir = '~/personal/rzls.nvim',
       },
@@ -77,8 +77,7 @@ return {
         end,
       })
 
-      local capabilities = vim.lsp.protocol.make_client_capabilities()
-      capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
+      require('mason').setup()
 
       local servers = {
         lua_ls = {
@@ -91,9 +90,6 @@ return {
           },
         },
       }
-
-      require('mason').setup()
-
       local ensure_installed = vim.tbl_keys(servers or {})
       vim.list_extend(ensure_installed, {
         'stylua', -- Used to format Lua code
@@ -104,27 +100,7 @@ return {
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
-      local rzls_path = vim.fs.joinpath(require('mason-registry').get_package('rzls'):get_install_path(), 'libexec')
-
-      require('roslyn').setup {
-        filewatching = true,
-        capabilities = capabilities,
-        args = {
-          '--logLevel=Information',
-          '--extensionLogDirectory=' .. vim.fs.dirname(vim.lsp.get_log_path()),
-          '--razorSourceGenerator=' .. vim.fs.joinpath(rzls_path, 'Microsoft.CodeAnalysis.Razor.Compiler.dll'),
-          '--razorDesignTimePath=' .. vim.fs.joinpath(rzls_path, 'Targets', 'Microsoft.NET.Sdk.Razor.DesignTime.targets'),
-        },
-        config = {
-          handlers = require 'rzls.roslyn_handlers',
-        },
-      }
-
-      require('rzls').setup {
-        capabilities = capabilities,
-        path = vim.fs.joinpath(rzls_path, 'rzls'),
-      }
-
+      local capabilities = lsp_capabilities()
       local disabled_lsp = { 'jdtls', 'hls' }
 
       require('mason-lspconfig').setup {
@@ -148,6 +124,36 @@ return {
     enabled = true,
     event = 'VeryLazy',
     opts = {},
+  },
+  {
+    'seblj/roslyn.nvim',
+    ft = 'cs',
+    dependencies = {
+      { dir = '~/personal/rzls.nvim' },
+    },
+    config = function()
+      local capabilities = lsp_capabilities()
+      local rzls_path = vim.fs.joinpath(require('mason-registry').get_package('rzls'):get_install_path(), 'libexec')
+
+      require('roslyn').setup {
+        filewatching = true,
+        capabilities = capabilities,
+        args = {
+          '--logLevel=Information',
+          '--extensionLogDirectory=' .. vim.fs.dirname(vim.lsp.get_log_path()),
+          '--razorSourceGenerator=' .. vim.fs.joinpath(rzls_path, 'Microsoft.CodeAnalysis.Razor.Compiler.dll'),
+          '--razorDesignTimePath=' .. vim.fs.joinpath(rzls_path, 'Targets', 'Microsoft.NET.Sdk.Razor.DesignTime.targets'),
+        },
+        config = {
+          handlers = require 'rzls.roslyn_handlers',
+        },
+      }
+
+      require('rzls').setup {
+        capabilities = capabilities,
+        path = vim.fs.joinpath(rzls_path, 'rzls'),
+      }
+    end,
   },
   {
     'mrcjkb/haskell-tools.nvim',
