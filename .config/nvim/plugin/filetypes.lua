@@ -5,3 +5,5 @@ vim.filetype.add {
     razor = 'razor',
   },
 }
+
+vim.treesitter.language.register('markdown', 'octo')

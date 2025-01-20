@@ -1,10 +1,6 @@
-require('csharp').load()
-
 vim.api.nvim_create_user_command('RazorReload', function()
   require('plenary.reload').reload_module('rzls.utils', false)
 end, {})
-
-vim.treesitter.language.register('markdown', 'octo')
 
 vim.keymap.set('n', '<leader>ct', function()
   require('nvim-treesitter.query').invalidate_query_cache 'c_sharp'
