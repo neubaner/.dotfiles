@@ -1,6 +1,7 @@
 local function lsp_capabilities()
   local capabilities = vim.lsp.protocol.make_client_capabilities()
-  return vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
+  return capabilities
+  -- return vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
 end
 
 ---@type LazySpec[]
@@ -118,12 +119,6 @@ return {
         },
       }
     end,
-  },
-  {
-    'ray-x/lsp_signature.nvim',
-    enabled = true,
-    event = 'VeryLazy',
-    opts = {},
   },
   {
     'seblj/roslyn.nvim',
