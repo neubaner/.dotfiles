@@ -23,7 +23,7 @@ local configuration_path = jdtls_path .. path_separator .. 'config_linux'
 local data_path = vim.fn.stdpath 'cache' .. path_separator .. 'jdtls_workspace' .. path_separator .. vim.fn.sha256(vim.fn.getcwd())
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
+-- capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
 
 local config = {
   -- The command that starts the language server

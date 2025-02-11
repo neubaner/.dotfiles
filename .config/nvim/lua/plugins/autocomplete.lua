@@ -1,7 +1,52 @@
 ---@type LazySpec[]
 return {
+  {
+    'saghen/blink.cmp',
+    version = '*',
+    dependencies = {
+      'rafamadriz/friendly-snippets',
+      {
+        'Kaiser-Yang/blink-cmp-git',
+        dependencies = { 'nvim-lua/plenary.nvim' },
+      },
+    },
+    ---@module 'blink.cmp'
+    ---@type blink.cmp.Config
+    opts = {
+      keymap = {
+        preset = 'default',
+        ['<C-l>'] = { 'snippet_forward', 'fallback' },
+        ['<C-h>'] = { 'snippet_backward', 'fallback' },
+      },
+      appearance = {
+        use_nvim_cmp_as_default = true,
+        nerd_font_variant = 'mono',
+      },
+      signature = { enabled = true },
+      sources = {
+        default = { 'git', 'lsp', 'path', 'snippets', 'buffer' },
+        providers = {
+          git = {
+            module = 'blink-cmp-git',
+            name = 'Git',
+            score_offset = 100,
+            enabled = true,
+            should_show_items = function()
+              local fts = { 'gitcommit', 'markdown' }
+              return vim.tbl_contains(fts, vim.o.filetype)
+            end,
+            ---@module 'blink-cmp-git'
+            ---@type blink-cmp-git.Options
+            opts = {},
+          },
+        },
+      },
+    },
+    opts_extend = { 'sources.default' },
+  },
   { -- Autocompletion
     'hrsh7th/nvim-cmp',
+    enabled = false,
     event = 'InsertEnter',
     dependencies = {
       {
