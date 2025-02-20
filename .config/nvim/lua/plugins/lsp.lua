@@ -40,6 +40,8 @@ return {
       },
     },
     config = function()
+      local lspconfig = require 'lspconfig'
+
       vim.api.nvim_create_autocmd('LspAttach', {
         group = vim.api.nvim_create_augroup('lsp-attach', { clear = true }),
         callback = function(event)
@@ -118,6 +120,8 @@ return {
           end,
         },
       }
+
+      lspconfig.phpactor.setup {}
     end,
   },
   {
@@ -139,6 +143,7 @@ return {
           '--extensionLogDirectory=' .. vim.fs.dirname(vim.lsp.get_log_path()),
           '--razorSourceGenerator=' .. vim.fs.joinpath(rzls_path, 'Microsoft.CodeAnalysis.Razor.Compiler.dll'),
           '--razorDesignTimePath=' .. vim.fs.joinpath(rzls_path, 'Targets', 'Microsoft.NET.Sdk.Razor.DesignTime.targets'),
+          '--stdio',
         },
         config = {
           handlers = require 'rzls.roslyn_handlers',
