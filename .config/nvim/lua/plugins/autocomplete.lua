@@ -3,12 +3,14 @@ return {
   {
     'saghen/blink.cmp',
     version = '*',
+    enabled = true,
     dependencies = {
       'rafamadriz/friendly-snippets',
       {
         'Kaiser-Yang/blink-cmp-git',
         dependencies = { 'nvim-lua/plenary.nvim' },
       },
+      'Kaiser-Yang/blink-cmp-avante',
     },
     ---@module 'blink.cmp'
     ---@type blink.cmp.Config
@@ -24,7 +26,7 @@ return {
       },
       signature = { enabled = true },
       sources = {
-        default = { 'git', 'lsp', 'path', 'snippets', 'buffer' },
+        default = { 'avante', 'git', 'lsp', 'path', 'snippets', 'buffer' },
         providers = {
           git = {
             module = 'blink-cmp-git',
@@ -38,6 +40,10 @@ return {
             ---@module 'blink-cmp-git'
             ---@type blink-cmp-git.Options
             opts = {},
+          },
+          avante = {
+            module = 'blink-cmp-avante',
+            name = 'Avante',
           },
         },
       },
