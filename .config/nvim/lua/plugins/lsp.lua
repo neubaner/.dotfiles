@@ -14,7 +14,7 @@ return {
         opts = {
           registries = {
             'github:mason-org/mason-registry',
-            'github:nvim-java/mason-registry',
+            -- 'github:nvim-java/mason-registry',
             'github:Crashdummyy/mason-registry',
           },
         },
@@ -38,6 +38,7 @@ return {
       {
         dir = '~/personal/rzls.nvim',
       },
+      'folke/trouble.nvim',
     },
     config = function()
       local lspconfig = require 'lspconfig'
@@ -92,12 +93,23 @@ return {
             },
           },
         },
+        azure_pipelines_ls = {
+          settings = {
+            yaml = {
+              schemas = {
+                ['https://raw.githubusercontent.com/microsoft/azure-pipelines-vscode/master/service-schema.json'] = {
+                  '/azure-pipeline*.y*l',
+                },
+              },
+            },
+          },
+        },
       }
       local ensure_installed = vim.tbl_keys(servers or {})
       vim.list_extend(ensure_installed, {
         'stylua', -- Used to format Lua code
         -- Java packages
-        'lombok-nightly',
+        -- 'lombok-nightly',
         -- 'openjdk-17',
         'jdtls',
       })
@@ -107,17 +119,8 @@ return {
       local disabled_lsp = { 'jdtls', 'hls' }
 
       require('mason-lspconfig').setup {
-        handlers = {
-          function(server_name)
-            -- jdtls setup is handled by a custom plugin
-            if vim.tbl_contains(disabled_lsp, server_name) then
-              return
-            end
-
-            local server = servers[server_name] or {}
-            server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
-            require('lspconfig')[server_name].setup(server)
-          end,
+        automatic_enable = {
+          exclude = disabled_lsp,
         },
       }
 
@@ -133,19 +136,20 @@ return {
     },
     config = function()
       local capabilities = lsp_capabilities()
-      local rzls_path = vim.fs.joinpath(require('mason-registry').get_package('rzls'):get_install_path(), 'libexec')
+      local rzls_path = vim.fn.expand '$MASON/packages/rzls/libexec/'
 
       require('roslyn').setup {
-        filewatching = true,
         capabilities = capabilities,
-        args = {
-          '--logLevel=Information',
-          '--extensionLogDirectory=' .. vim.fs.dirname(vim.lsp.get_log_path()),
-          '--razorSourceGenerator=' .. vim.fs.joinpath(rzls_path, 'Microsoft.CodeAnalysis.Razor.Compiler.dll'),
-          '--razorDesignTimePath=' .. vim.fs.joinpath(rzls_path, 'Targets', 'Microsoft.NET.Sdk.Razor.DesignTime.targets'),
-          '--stdio',
-        },
         config = {
+          cmd = {
+            'dotnet',
+            vim.fn.expand '$MASON/packages/roslyn/libexec/Microsoft.CodeAnalysis.LanguageServer.dll',
+            '--logLevel=Information',
+            '--extensionLogDirectory=' .. vim.fs.dirname(vim.lsp.get_log_path()),
+            '--razorSourceGenerator=' .. vim.fs.joinpath(rzls_path, 'Microsoft.CodeAnalysis.Razor.Compiler.dll'),
+            '--razorDesignTimePath=' .. vim.fs.joinpath(rzls_path, 'Targets', 'Microsoft.NET.Sdk.Razor.DesignTime.targets'),
+            '--stdio',
+          },
           handlers = require 'rzls.roslyn_handlers',
         },
       }
@@ -160,6 +164,10 @@ return {
     'mrcjkb/haskell-tools.nvim',
     version = '^3',
   },
-  'mfussenegger/nvim-jdtls',
+  {
+    'mfussenegger/nvim-jdtls',
+    ft = { 'java' },
+    dependencies = { 'williamboman/mason.nvim' },
+  },
   { 'numToStr/Comment.nvim', opts = {} },
 }

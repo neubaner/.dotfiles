@@ -28,5 +28,3 @@ vim.api.nvim_create_user_command('LspStopAll', function()
     lsp_client:stop()
   end
 end, {})
-
-vim.lsp.set_log_level 'DEBUG'
