@@ -106,7 +106,7 @@ return {
     ft = { 'cs', 'razor' },
     dependencies = {
       { 'tris203/rzls.nvim', opts = {} },
-      'williamboman/mason.nvim',
+      'mason-org/mason.nvim',
     },
     ---@type RoslynNvimConfig
     opts = {
