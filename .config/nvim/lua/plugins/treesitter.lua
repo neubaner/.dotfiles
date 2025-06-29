@@ -2,10 +2,15 @@
 return {
   {
     'nvim-treesitter/nvim-treesitter',
+    dependencies = { 'nvim-treesitter/nvim-treesitter-textobjects' },
     build = ':TSUpdate',
+    ---@type TSConfig
     opts = {
-      ensure_installed = { 'bash', 'c', 'html', 'lua', 'markdown', 'vim', 'vimdoc', 'razor' },
+      modules = {},
+      sync_install = false,
       auto_install = true,
+      ensure_installed = { 'bash', 'c', 'html', 'lua', 'markdown', 'vim', 'vimdoc', 'razor' },
+      ignore_install = {},
       highlight = {
         enable = true,
         additional_vim_regex_highlighting = { 'ruby' },
@@ -15,50 +20,5 @@ return {
     config = function(_, opts)
       require('nvim-treesitter.configs').setup(opts)
     end,
-  },
-  {
-    'https://github.com/Samonitari/tree-sitter-caddy',
-    dependencies = {
-      'nvim-treesitter/nvim-treesitter',
-      opts = function(_, opts)
-        require('nvim-treesitter.parsers').get_parser_configs().caddy = {
-          install_info = {
-            url = 'https://github.com/Samonitari/tree-sitter-caddy',
-            files = { 'src/parser.c', 'src/scanner.c' },
-            branch = 'master',
-          },
-          filetype = 'caddy',
-        }
-
-        opts.ensure_installed = opts.ensure_installed or {}
-        vim.list_extend(opts.ensure_installed, { 'caddy' })
-        vim.filetype.add {
-          pattern = {
-            ['Caddyfile'] = 'caddy',
-          },
-        }
-      end,
-    },
-    event = 'BufRead Caddyfile',
-  },
-  {
-    'https://github.com/tris203/tree-sitter-razor',
-    dependencies = {
-      'nvim-treesitter/nvim-treesitter',
-      opts = function(_, opts)
-        ---@type ParserInfo
-        require('nvim-treesitter.parsers').get_parser_configs().razor = {
-          install_info = {
-            url = 'https://github.com/tris203/tree-sitter-razor',
-            files = { 'src/parser.c', 'src/scanner.c' },
-            branch = 'main',
-          },
-          filetype = 'razor',
-        }
-
-        opts.ensure_installed = opts.ensure_installed or {}
-        table.insert(opts.ensure_installed, 'razor')
-      end,
-    },
   },
 }

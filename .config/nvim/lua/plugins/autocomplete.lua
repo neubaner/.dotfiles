@@ -26,7 +26,7 @@ return {
       },
       signature = { enabled = true },
       sources = {
-        default = { 'avante', 'git', 'lsp', 'path', 'snippets', 'buffer' },
+        default = { 'avante', 'git', 'lsp', 'path', 'snippets', 'buffer', 'lazydev' },
         providers = {
           git = {
             module = 'blink-cmp-git',
@@ -44,6 +44,11 @@ return {
           avante = {
             module = 'blink-cmp-avante',
             name = 'Avante',
+          },
+          lazydev = {
+            name = 'LazyDev',
+            module = 'lazydev.integrations.blink',
+            score_offset = 100,
           },
         },
       },
