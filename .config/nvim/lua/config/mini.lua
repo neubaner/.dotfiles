@@ -3,24 +3,26 @@ require('mini.ai').setup { n_lines = 500 }
 require('mini.surround').setup()
 require('mini.bracketed').setup()
 
-local mini_utils = require 'config.mini-utils'
 local statusline = require 'mini.statusline'
 
 local diag_signs = {
-  ERROR = '%#DiagnosticError#',
-  WARN = '%#DiagnosticWarn#',
-  INFO = '%#DiagnosticInfo#󰋼',
-  HINT = '%#DiagnosticHint#',
+  ERROR = '%#MiniStatuslineDiagnosticError#',
+  WARN = '%#MiniStatuslineDiagnosticWarn#',
+  INFO = '%#MiniStatuslineDiagnosticInfo#󰋼',
+  HINT = '%#MiniStatuslineDiagnosticHint#',
 }
 
-local symbols = require('trouble').statusline {
-  mode = 'lsp_document_symbols',
-  groups = {},
-  title = false,
-  filter = { range = true },
-  format = '{kind_icon}{symbol.name:Normal}',
-  hl_group = 'MiniStatuslineDevinfo',
-}
+local devinfo_highlight = vim.api.nvim_get_hl(0, { name = 'MiniStatuslineDevinfo' })
+for _, diag_kind in ipairs { 'Error', 'Warn', 'Info', 'Hint' } do
+  local diag_highlight = vim.api.nvim_get_hl(0, { name = 'Diagnostic' .. diag_kind })
+  vim.api.nvim_set_hl(
+    0,
+    'MiniStatuslineDiagnostic' .. diag_kind,
+    vim.tbl_extend('force', devinfo_highlight, {
+      fg = diag_highlight.fg,
+    })
+  )
+end
 
 local function statusline_config()
   local mode, mode_hl = statusline.section_mode { trunc_width = 120 }
