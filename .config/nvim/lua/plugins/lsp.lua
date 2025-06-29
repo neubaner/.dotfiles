@@ -17,12 +17,11 @@ return {
       {
         'folke/lazydev.nvim',
         ft = 'lua',
-        dependencies = {
-          { 'Bilal2453/luvit-meta', lazy = true },
-        },
+        cmd = 'LazyDev',
         opts = {
           library = {
-            { path = 'luvit-meta/library', words = { 'vim%.uv' } },
+            { path = '${3rd}/luv/library', words = { 'vim%.uv' } },
+            { path = 'lazy.nvim', words = { 'Lazy' } },
           },
         },
       },
@@ -85,7 +84,10 @@ return {
       { 'tris203/rzls.nvim', opts = {} },
       'williamboman/mason.nvim',
     },
-    opts = {},
+    ---@type RoslynNvimConfig
+    opts = {
+      filewatching = 'roslyn',
+    },
     init = function()
       vim.filetype.add {
         extension = {
@@ -104,5 +106,4 @@ return {
     ft = { 'java' },
     dependencies = { 'mason-org/mason.nvim' },
   },
-  { 'numToStr/Comment.nvim', opts = {} },
 }
