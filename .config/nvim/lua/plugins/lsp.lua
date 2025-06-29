@@ -1,26 +1,18 @@
-local function lsp_capabilities()
-  local capabilities = vim.lsp.protocol.make_client_capabilities()
-  return capabilities
-  -- return vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
-end
-
 ---@type LazySpec[]
 return {
   {
     'neovim/nvim-lspconfig',
     dependencies = {
       {
-        'williamboman/mason.nvim',
+        'mason-org/mason.nvim',
         opts = {
           registries = {
             'github:mason-org/mason-registry',
-            -- 'github:nvim-java/mason-registry',
             'github:Crashdummyy/mason-registry',
           },
         },
       },
-      'williamboman/mason-lspconfig.nvim',
-      'WhoIsSethDaniel/mason-tool-installer.nvim',
+      'mason-org/mason-lspconfig.nvim',
       { 'j-hui/fidget.nvim', opts = {} },
       {
         'folke/lazydev.nvim',
@@ -35,14 +27,9 @@ return {
         },
       },
       { 'folke/neoconf.nvim', opts = {} },
-      {
-        dir = '~/personal/rzls.nvim',
-      },
       'folke/trouble.nvim',
     },
     config = function()
-      local lspconfig = require 'lspconfig'
-
       vim.api.nvim_create_autocmd('LspAttach', {
         group = vim.api.nvim_create_augroup('lsp-attach', { clear = true }),
         callback = function(event)
@@ -81,82 +68,30 @@ return {
         end,
       })
 
-      require('mason').setup()
-
-      local servers = {
-        lua_ls = {
-          settings = {
-            Lua = {
-              completion = {
-                callSnippet = 'Replace',
-              },
-            },
-          },
-        },
-        azure_pipelines_ls = {
-          settings = {
-            yaml = {
-              schemas = {
-                ['https://raw.githubusercontent.com/microsoft/azure-pipelines-vscode/master/service-schema.json'] = {
-                  '/azure-pipeline*.y*l',
-                },
-              },
-            },
-          },
-        },
-      }
-      local ensure_installed = vim.tbl_keys(servers or {})
-      vim.list_extend(ensure_installed, {
-        'stylua', -- Used to format Lua code
-        -- Java packages
-        -- 'lombok-nightly',
-        -- 'openjdk-17',
-        'jdtls',
-      })
-      require('mason-tool-installer').setup { ensure_installed = ensure_installed }
-
-      local capabilities = lsp_capabilities()
-      local disabled_lsp = { 'jdtls', 'hls' }
-
       require('mason-lspconfig').setup {
+        ensure_installed = {},
         automatic_enable = {
-          exclude = disabled_lsp,
+          exclude = { 'jdtls', 'hls' },
         },
       }
 
-      lspconfig.phpactor.setup {}
+      vim.lsp.enable { 'phpactor' }
     end,
   },
   {
     'seblj/roslyn.nvim',
     ft = { 'cs', 'razor' },
     dependencies = {
-      { dir = '~/personal/rzls.nvim' },
+      { 'tris203/rzls.nvim', opts = {} },
       'williamboman/mason.nvim',
     },
-    config = function()
-      local capabilities = lsp_capabilities()
-      local rzls_path = vim.fn.expand '$MASON/packages/rzls/libexec/'
-
-      require('roslyn').setup {
-        capabilities = capabilities,
-        config = {
-          cmd = {
-            'dotnet',
-            vim.fn.expand '$MASON/packages/roslyn/libexec/Microsoft.CodeAnalysis.LanguageServer.dll',
-            '--logLevel=Information',
-            '--extensionLogDirectory=' .. vim.fs.dirname(vim.lsp.get_log_path()),
-            '--razorSourceGenerator=' .. vim.fs.joinpath(rzls_path, 'Microsoft.CodeAnalysis.Razor.Compiler.dll'),
-            '--razorDesignTimePath=' .. vim.fs.joinpath(rzls_path, 'Targets', 'Microsoft.NET.Sdk.Razor.DesignTime.targets'),
-            '--stdio',
-          },
-          handlers = require 'rzls.roslyn_handlers',
+    opts = {},
+    init = function()
+      vim.filetype.add {
+        extension = {
+          razor = 'razor',
+          cshtml = 'razor',
         },
-      }
-
-      require('rzls').setup {
-        capabilities = capabilities,
-        path = vim.fs.joinpath(rzls_path, 'rzls'),
       }
     end,
   },
@@ -167,7 +102,7 @@ return {
   {
     'mfussenegger/nvim-jdtls',
     ft = { 'java' },
-    dependencies = { 'williamboman/mason.nvim' },
+    dependencies = { 'mason-org/mason.nvim' },
   },
   { 'numToStr/Comment.nvim', opts = {} },
 }
