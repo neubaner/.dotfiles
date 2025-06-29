@@ -49,7 +49,7 @@ return {
 
           local client = vim.lsp.get_client_by_id(event.data.client_id)
           if client and client:supports_method(vim.lsp.protocol.Methods.textDocument_documentHighlight, event.buf) then
-            local highlight_augroup = vim.api.nvim_create_augroup('lsp-highlight', { clear = true })
+            local highlight_augroup = vim.api.nvim_create_augroup('lsp-highlight', { clear = false })
             vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
               buffer = event.buf,
               group = highlight_augroup,
@@ -75,7 +75,7 @@ return {
               enabled = not enabled
             end, '[T]oggle [C]ode Lens')
 
-            local codelens_augroup = vim.api.nvim_create_augroup('lsp-codelens', { clear = true })
+            local codelens_augroup = vim.api.nvim_create_augroup('lsp-codelens', { clear = false })
             vim.api.nvim_create_autocmd({ 'BufEnter', 'CursorHold', 'InsertLeave' }, {
               group = codelens_augroup,
               buffer = event.buf,
