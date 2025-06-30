@@ -1,10 +1,4 @@
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
--- vim.keymap.set('n', '[d', function()
---   vim.diagnostic.jump { count = -1 }
--- end, { desc = 'Go to previous [D]iagnostic message' })
--- vim.keymap.set('n', ']d', function()
---   vim.diagnostic.jump { count = 1 }
--- end, { desc = 'Go to next [D]iagnostic message' })
 vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Show diagnostic [E]rror messages' })
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
 vim.keymap.set('n', '<leader>Q', vim.diagnostic.setqflist, { desc = 'Open all diagnostics [Q]uickfix list' })
@@ -15,3 +9,8 @@ vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left wind
 vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
 vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
+
+vim.keymap.set('n', '<M-,>', '<C-w>5<', { desc = 'Decrease window width by 5' })
+vim.keymap.set('n', '<M-.>', '<C-w>5>', { desc = 'Increase window width by 5' })
+vim.keymap.set('n', '<M-t>', '<C-w>5+', { desc = 'Increase window height by 5' })
+vim.keymap.set('n', '<M-s>', '<C-w>5-', { desc = 'Decrease window height by 5' })

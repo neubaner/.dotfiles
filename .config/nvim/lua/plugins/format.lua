@@ -68,5 +68,5 @@ return {
       })
     end,
   },
-  { 'tpope/vim-sleuth', enabled = true }, -- Detect tabstop and shiftwidth automatically
+  { 'NMAC427/guess-indent.nvim', opts = {} },
 }
