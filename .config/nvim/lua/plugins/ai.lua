@@ -11,14 +11,14 @@ return {
       return {
         display = {
           chat = {
-            show_settings = true,
+            show_settings = false,
           },
         },
         strategies = {
           chat = {
             adapter = {
               name = 'copilot',
-              model = 'claude-3.7-sonnet',
+              model = 'gemini-2.5-pro',
             },
           },
           inline = {
@@ -53,7 +53,9 @@ return {
       {
         'ravitemer/mcphub.nvim',
         build = 'npm install -g mcp-hub@latest',
-        opts = {},
+        opts = {
+          auto_approve = false,
+        },
       },
     },
   },
@@ -68,7 +70,7 @@ return {
         provider = 'copilot',
         providers = {
           copilot = {
-            model = 'claude-3.7-sonnet',
+            model = 'claude-sonnet-4',
           },
         },
         behaviour = {
