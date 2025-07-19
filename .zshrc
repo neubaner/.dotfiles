@@ -70,7 +70,16 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git docker github rust dotnet gradle github)
+plugins=(git docker github rust dotnet gradle github jj vi-mode)
+VI_MODE_SET_CURSOR=true
+
+autoload -U select-quoted
+zle -N select-quoted
+for m in visual viopp; do
+    for c in {a,i}{\',\",\`}; do
+        bindkey -M $m $c select-quoted
+    done
+done
 
 source $ZSH/oh-my-zsh.sh
 
