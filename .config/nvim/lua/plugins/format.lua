@@ -1,3 +1,7 @@
+local state = {
+  spotless_exists = {},
+}
+
 ---@type LazySpec[]
 return {
   {
@@ -10,9 +14,10 @@ return {
             return
           end
 
-          local disable_filetypes = { c = true, cpp = true, razor = true }
+          local disable_filetypes = { c = true, cpp = true, razor = true, kotlin = true }
+
           return {
-            timeout_ms = 5000,
+            timeout_ms = 10000,
             lsp_fallback = not disable_filetypes[vim.bo[bufnr].filetype],
           }
         end,
@@ -23,28 +28,70 @@ return {
           markdown = { 'markdownlint' },
           terraform = { 'hcl' },
           php = { 'pint' },
-          -- java = { 'spotless' },
+          java = { 'spotless', lsp_format = 'fallback' },
           ['terraform-vars'] = { 'hcl' },
         },
         log_level = vim.log.levels.DEBUG,
         formatters = {
           spotless = {
-            condition = function(_, ctx)
-              return vim.bo[ctx.buf].filetype == 'java'
-            end,
             cwd = require('conform.util').root_file { '.git', 'mvnw', 'gradlew' },
-            command = './gradlew',
-            args = function(_, ctx)
-              return {
+            condition = function(self, ctx)
+              local cwd = self:cwd(ctx)
+
+              if cwd == nil then
+                return false
+              end
+
+              if state.spotless_exists[cwd] == nil then
+                local success, out = pcall(function()
+                  return vim
+                    .system({
+                      './gradlew',
+                      'spotlessCheck',
+                      '--dry-run',
+                    }, { cwd = cwd, text = true })
+                    :wait()
+                end)
+
+                state.spotless_exists[cwd] = success and out.code == 0
+              end
+
+              return state.spotless_exists[cwd]
+            end,
+            format = function(self, ctx, lines, callback)
+              vim.system({
+                './gradlew',
                 'spotlessApply',
                 '--quiet',
+                '--daemon',
+                '--configuration-cache',
                 '-PspotlessIdeHook=' .. ctx.filename,
                 '-PspotlessIdeHookUseStdIn',
                 '-PspotlessIdeHookUseStdOut',
-              }
+              }, {
+                cwd = require('conform.util').root_file { '.git', 'mvnw', 'gradlew' }(self, ctx),
+                text = true,
+                stdin = lines,
+              }, function(out)
+                vim.schedule(function()
+                  if vim.startswith(out.stderr, 'IS DIRTY') then
+                    local new_lines = vim.split(out.stdout, '\n', { plain = true })
+                    while #new_lines > 0 and new_lines[#new_lines] == '' do
+                      table.remove(new_lines)
+                    end
+                    callback(nil, new_lines)
+                  elseif vim.startswith(out.stderr, 'IS CLEAN') then
+                    callback(nil, lines)
+                  elseif vim.startswith(out.stderr, 'DID NOT CONVERGE') then
+                    callback(out.stderr, nil)
+                  elseif out.stderr == '' then
+                    callback('File not included in the formatter', nil)
+                  else
+                    callback(out.stderr, nil)
+                  end
+                end)
+              end)
             end,
-            require_cwd = true,
-            stdin = true,
           },
         },
       }

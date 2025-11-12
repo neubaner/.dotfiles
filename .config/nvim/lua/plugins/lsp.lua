@@ -13,7 +13,7 @@ return {
         },
       },
       'mason-org/mason-lspconfig.nvim',
-      { 'j-hui/fidget.nvim', opts = {} },
+      { 'j-hui/fidget.nvim',  opts = {} },
       {
         'folke/lazydev.nvim',
         ft = 'lua',
@@ -21,7 +21,7 @@ return {
         opts = {
           library = {
             { path = '${3rd}/luv/library', words = { 'vim%.uv' } },
-            { path = 'lazy.nvim', words = { 'Lazy' } },
+            { path = 'lazy.nvim',          words = { 'Lazy' } },
           },
         },
       },
@@ -98,17 +98,30 @@ return {
         },
       }
 
-      vim.lsp.enable { 'phpactor' }
+      vim.lsp.enable {
+        'phpactor',
+        'kotlin_language_server',
+        'nil_ls',
+        'lua_ls'
+      }
+
+      vim.lsp.log.set_level(vim.lsp.log_levels.DEBUG)
     end,
   },
   {
     'seblj/roslyn.nvim',
-    ft = { 'cs', 'razor' },
     dependencies = {
       { dir = '~/personal/rzls.nvim', config = true },
       'mason-org/mason.nvim',
     },
+    ft = { 'cs', 'razor' },
     config = function()
+      require('roslyn').setup {
+        broad_search = true,
+        lock_target = true,
+        filewatching = 'off',
+      }
+
       local rzls_path = vim.fn.expand '$MASON/packages/rzls/libexec/'
       vim.lsp.config('roslyn', {
         cmd = {
@@ -122,13 +135,6 @@ return {
           vim.fs.joinpath(rzls_path, 'RazorExtension', 'Microsoft.VisualStudioCode.RazorExtension.dll'),
         },
         handlers = require 'rzls.roslyn_handlers',
-        capabilities = {
-          workspace = {
-            didChangeWatchedFiles = {
-              dynamicRegistration = true,
-            },
-          },
-        },
         settings = {
           ['csharp|background_analysis'] = {
             dotnet_analyzer_diagnostics_scope = 'fullSolution',
@@ -161,7 +167,6 @@ return {
           },
         },
       })
-      vim.lsp.enable 'roslyn'
 
       -- From: https://github.com/seblyng/roslyn.nvim/wiki
       vim.api.nvim_create_autocmd('LspAttach', {
@@ -198,7 +203,7 @@ return {
                 -- buffer has changed.
                 vim.defer_fn(function()
                   client:request(
-                    ---@diagnostic disable-next-line: param-type-mismatch
+                  ---@diagnostic disable-next-line: param-type-mismatch
                     'textDocument/_vs_onAutoInsert',
                     params,
                     function(err, result, _)
@@ -229,10 +234,56 @@ return {
   {
     'mrcjkb/haskell-tools.nvim',
     version = '^3',
+    ft = { 'haskell', 'lhaskell' },
   },
   {
     'mfussenegger/nvim-jdtls',
     ft = { 'java' },
     dependencies = { 'mason-org/mason.nvim' },
+    config = function()
+      vim.lsp.enable 'jdtls'
+
+      vim.api.nvim_create_autocmd('LspAttach', {
+        group = vim.api.nvim_create_augroup('jdtls-lsp-attach', { clear = true }),
+        pattern = { '*.java' },
+        callback = function(event)
+          vim.keymap.set('n', '<leader>df', function()
+            require('jdtls').test_class()
+          end, { desc = 'Run Java tests', buffer = event.buf })
+
+          vim.keymap.set('n', '<leader>dn', function()
+            require('jdtls').test_nearest_method()
+          end, { desc = 'Run nearest Java test', buffer = event.buf })
+        end,
+      })
+
+      vim.api.nvim_create_autocmd('BufWritePost', {
+        group = vim.api.nvim_create_augroup('jdtls-reload-projects', { clear = true }),
+        pattern = { 'build.gradle.kts', 'build.gradle', 'settings.gradle.kts', 'settings.gradle' },
+        callback = function(event)
+          local jdtls_clients = vim.lsp.get_clients { name = 'jdtls' }
+
+          if #jdtls_clients > 0 then
+            local file_path = vim.api.nvim_buf_get_name(event.buf)
+            local file_directory = vim.fn.fnamemodify(file_path, ':h')
+
+            for _, jdtls_client in ipairs(jdtls_clients) do
+              jdtls_client:notify('java/projectConfigurationsUpdate', {
+                identifiers = { { uri = file_directory } },
+              })
+
+              jdtls_client:request('java/buildProjects', {
+                identifiers = { { uri = file_directory } },
+                isFullBuild = true,
+              }, function(err, result, context, config)
+                if err ~= nil then
+                  vim.notify(err.message, vim.log.levels.ERROR)
+                end
+              end)
+            end
+          end
+        end,
+      })
+    end,
   },
 }

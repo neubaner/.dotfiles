@@ -1,19 +1,33 @@
 ---@type LazySpec[]
 return {
   {
-    'folke/tokyonight.nvim',
+    'catppuccin/nvim',
+    name = 'catppuccin',
+    lazy = false,
     priority = 1000,
-    enabled = true,
-    init = function()
-      vim.cmd.colorscheme 'tokyonight-night'
-      vim.cmd.hi 'Comment gui=none'
-    end,
     config = function()
-      require('tokyonight').setup {
-        on_highlights = function(highlights, colors)
-          highlights.LspCodeLens = { fg = colors.comment }
-        end,
+      require('catppuccin').setup {
+        flavour = 'mocha',
       }
     end,
+  },
+  {
+    'folke/tokyonight.nvim',
+    priority = 1000,
+    opts = {
+      on_highlights = function(highlights, colors)
+        highlights.LspCodeLens = { fg = colors.comment }
+      end,
+    },
+    config = function(_, opts)
+      require('tokyonight').setup(opts)
+      vim.cmd [[colorscheme tokyonight-night]]
+      vim.cmd.hi 'Comment gui=none'
+    end,
+  },
+  {
+    'vague2k/vague.nvim',
+    lazy = true,
+    priority = 1000,
   },
 }
