@@ -13,6 +13,9 @@ require('lazy').setup {
   spec = {
     { import = 'plugins' },
   },
+  rocks = {
+    server = 'https://lumen-oss.github.io/rocks-binaries/',
+  },
   ui = {
     icons = vim.g.have_nerd_font and {} or {
       cmd = '⌘',

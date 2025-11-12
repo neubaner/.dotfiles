@@ -27,4 +27,10 @@ return {
     },
     opts = {},
   },
+  {
+    'julienvincent/hunk.nvim',
+    cmd = { 'DiffEditor' },
+    opts = {},
+  },
+  'rafikdraoui/jj-diffconflicts',
 }

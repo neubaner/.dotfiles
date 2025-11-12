@@ -1,5 +1,4 @@
 local jdtls_path = vim.fn.expand '$MASON/packages/jdtls'
-local java_exe = vim.fn.expand '$HOME/.sdkman/candidates/java/21.0.3-amzn/bin/java'
 
 local equinox_launcher = vim.fn.glob(vim.fs.joinpath(jdtls_path, 'plugins', 'org.eclipse.equinox.launcher_*.jar'))
 local shared_configuration_path = vim.fs.joinpath(vim.fn.stdpath 'cache', 'jdtls_share_configuration')
@@ -27,7 +26,7 @@ local function build_config(opts)
     -- The command that starts the language server
     -- See: https://github.com/eclipse/eclipse.jdt.ls#running-from-the-command-line
     cmd = {
-      java_exe,
+      'java',
       '-Declipse.application=org.eclipse.jdt.ls.core.id1',
       '-Dosgi.bundles.defaultStartLevel=4',
       '-Declipse.product=org.eclipse.jdt.ls.core.product',

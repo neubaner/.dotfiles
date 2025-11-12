@@ -14,3 +14,9 @@ vim.keymap.set('n', '<M-,>', '<C-w>5<', { desc = 'Decrease window width by 5' })
 vim.keymap.set('n', '<M-.>', '<C-w>5>', { desc = 'Increase window width by 5' })
 vim.keymap.set('n', '<M-t>', '<C-w>5+', { desc = 'Increase window height by 5' })
 vim.keymap.set('n', '<M-s>', '<C-w>5-', { desc = 'Decrease window height by 5' })
+
+vim.keymap.set('n', 'K', function()
+  vim.lsp.buf.hover {
+    border = 'rounded',
+  }
+end)
