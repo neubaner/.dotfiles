@@ -11,6 +11,7 @@ require('nvim-treesitter').install {
   'nix',
   'sql',
   'dockerfile',
+  'proto',
 
   -- Markup languages
   'toml',
