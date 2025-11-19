@@ -20,17 +20,27 @@ return {
   },
   {
     'pwntester/octo.nvim',
+    cmd = 'Octo',
+    ---@module 'octo'
+    ---@type OctoConfig
+    ---@diagnostic disable-next-line: missing-fields
+    opts = {
+      enable_builtin = true,
+    },
     dependencies = {
       'nvim-lua/plenary.nvim',
       'nvim-telescope/telescope.nvim',
       'nvim-tree/nvim-web-devicons',
     },
-    opts = {},
   },
   {
     'julienvincent/hunk.nvim',
-    cmd = { 'DiffEditor' },
+    cmd = 'DiffEditor',
     opts = {},
+    dependencies = {
+      'MunifTanjim/nui.nvim',
+      'nvim-tree/nvim-web-devicons',
+    },
   },
-  'rafikdraoui/jj-diffconflicts',
+  { 'rafikdraoui/jj-diffconflicts', cmd = 'JJDiffConflicts' },
 }

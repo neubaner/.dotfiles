@@ -2,7 +2,7 @@
 return {
   {
     'rest-nvim/rest.nvim',
-    enabled = false,
+    enabled = true,
     keys = {
       {
         '<leader>r',

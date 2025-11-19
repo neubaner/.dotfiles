@@ -1,12 +1,8 @@
-local ollama_host = vim.env.OLLAMA_HOST or ''
-
-local use_companion = true
-
 ---@type LazySpec[]
 return {
   {
     'olimorris/codecompanion.nvim',
-    enabled = use_companion,
+    cmd = { 'CodeCompanion', 'CodeCompanionActions', 'CodeCompanionChat', 'CodeCompanionCmd', 'CodeCompanionHistory', 'CodeCompanionSummaries' },
     opts = function()
       return {
         memory = {
@@ -51,6 +47,8 @@ return {
           },
           history = {
             enabled = true,
+            ---@module 'codecompanion._extensions.history'
+            ---@type CodeCompanion.History.Opts
             opts = {
               -- Keymap to open history from chat buffer (default: gh)
               keymap = 'gh',
@@ -129,46 +127,13 @@ return {
         'ravitemer/mcphub.nvim',
         build = 'bundled_build.lua',
         dependencies = {
-          "nvim-lua/plenary.nvim",
+          'nvim-lua/plenary.nvim',
         },
         opts = {
           use_bundled_binary = true,
           auto_approve = false,
         },
       },
-    },
-  },
-  {
-    'yetone/avante.nvim',
-    event = 'VeryLazy',
-    lazy = false,
-    enabled = not use_companion,
-    version = false,
-    opts = function()
-      return {
-        provider = 'copilot',
-        providers = {
-          copilot = {
-            model = 'claude-sonnet-4',
-          },
-        },
-        behaviour = {
-          enable_token_counting = true,
-        },
-      }
-    end,
-    -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
-    build = 'make',
-    -- build = "powershell -ExecutionPolicy Bypass -File Build.ps1 -BuildFromSource false" -- for windows
-    dependencies = {
-      'nvim-treesitter/nvim-treesitter',
-      'stevearc/dressing.nvim',
-      'nvim-lua/plenary.nvim',
-      'MunifTanjim/nui.nvim',
-      { 'zbirenbaum/copilot.lua', opts = {} },
-      --- The below dependencies are optional,
-      'nvim-telescope/telescope.nvim',
-      'nvim-tree/nvim-web-devicons',
     },
   },
 }

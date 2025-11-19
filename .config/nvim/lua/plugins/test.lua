@@ -2,7 +2,6 @@
 return {
   {
     'nvim-neotest/neotest',
-    lazy = false,
     dependencies = {
       'nvim-neotest/nvim-nio',
       'nvim-lua/plenary.nvim',
@@ -47,8 +46,11 @@ return {
         desc = 'Debug nearest test',
       },
     },
-    config = function()
-      require('neotest').setup {
+    opts = function()
+      ---@module 'neotest'
+      ---@type neotest.Config
+      ---@diagnostic disable-next-line: missing-fields
+      return {
         adapters = {
           require 'neotest-dotnet' {
             discovery_root = 'solution',

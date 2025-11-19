@@ -10,7 +10,6 @@ return {
         'Kaiser-Yang/blink-cmp-git',
         dependencies = { 'nvim-lua/plenary.nvim' },
       },
-      'Kaiser-Yang/blink-cmp-avante',
     },
     ---@module 'blink.cmp'
     ---@type blink.cmp.Config
@@ -21,12 +20,10 @@ return {
         ['<C-h>'] = { 'snippet_backward', 'fallback' },
       },
       appearance = {
-        use_nvim_cmp_as_default = true,
         nerd_font_variant = 'mono',
       },
-      signature = { enabled = true },
       sources = {
-        default = { 'avante', 'git', 'lsp', 'path', 'snippets', 'buffer', 'lazydev' },
+        default = { 'git', 'lsp', 'path', 'snippets', 'buffer', 'lazydev' },
         providers = {
           git = {
             module = 'blink-cmp-git',
@@ -34,16 +31,12 @@ return {
             score_offset = 100,
             enabled = true,
             should_show_items = function()
-              local fts = { 'gitcommit', 'markdown' }
+              local fts = { 'gitcommit', 'markdown', 'jjdescription' }
               return vim.tbl_contains(fts, vim.o.filetype)
             end,
             ---@module 'blink-cmp-git'
             ---@type blink-cmp-git.Options
             opts = {},
-          },
-          avante = {
-            module = 'blink-cmp-avante',
-            name = 'Avante',
           },
           lazydev = {
             name = 'LazyDev',

@@ -13,20 +13,7 @@ return {
         },
       },
       'mason-org/mason-lspconfig.nvim',
-      { 'j-hui/fidget.nvim',  opts = {} },
-      {
-        'folke/lazydev.nvim',
-        ft = 'lua',
-        cmd = 'LazyDev',
-        opts = {
-          library = {
-            { path = '${3rd}/luv/library', words = { 'vim%.uv' } },
-            { path = 'lazy.nvim',          words = { 'Lazy' } },
-          },
-        },
-      },
-      { 'folke/neoconf.nvim', opts = {} },
-      'folke/trouble.nvim',
+      { 'j-hui/fidget.nvim', opts = {} },
     },
     config = function()
       vim.api.nvim_create_autocmd('LspAttach', {
@@ -76,7 +63,7 @@ return {
             end, '[T]oggle [C]ode Lens')
 
             local codelens_augroup = vim.api.nvim_create_augroup('lsp-codelens', { clear = false })
-            vim.api.nvim_create_autocmd({ 'BufEnter', 'CursorHold', 'InsertLeave' }, {
+            vim.api.nvim_create_autocmd({ 'BufEnter', 'InsertLeave' }, {
               group = codelens_augroup,
               buffer = event.buf,
               callback = function(ev)
@@ -102,10 +89,8 @@ return {
         'phpactor',
         'kotlin_language_server',
         'nil_ls',
-        'lua_ls'
+        'lua_ls',
       }
-
-      vim.lsp.log.set_level(vim.lsp.log_levels.DEBUG)
     end,
   },
   {
@@ -203,7 +188,7 @@ return {
                 -- buffer has changed.
                 vim.defer_fn(function()
                   client:request(
-                  ---@diagnostic disable-next-line: param-type-mismatch
+                    ---@diagnostic disable-next-line: param-type-mismatch
                     'textDocument/_vs_onAutoInsert',
                     params,
                     function(err, result, _)
