@@ -2,6 +2,7 @@
 return {
   {
     'folke/trouble.nvim',
+    cmd = { 'Trouble' },
     dependencies = { 'nvim-tree/nvim-web-devicons' },
     opts = {},
   },
@@ -9,6 +10,7 @@ return {
     'folke/which-key.nvim',
     event = 'VeryLazy',
     opts_extend = { 'spec' },
+    ---@module 'which-key'
     ---@type wk.Opts
     opts = {
       preset = 'helix',
@@ -30,7 +32,8 @@ return {
   },
   {
     'folke/todo-comments.nvim',
-    event = 'VimEnter',
+    cmd = { 'TodoTroble', 'TodoTelescope', 'TodoQuickFix' },
+    event = { 'BufReadPost', 'BufWritePost', 'BufNewFile' },
     dependencies = { 'nvim-lua/plenary.nvim' },
     opts = {
       signs = false,
@@ -46,7 +49,7 @@ return {
   {
     'folke/lazydev.nvim',
     ft = 'lua',
-    cmd = 'LazyDev',
+    cmd = { 'LazyDev' },
     opts = {
       library = {
         { path = '${3rd}/luv/library', words = { 'vim%.uv' } },

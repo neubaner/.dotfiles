@@ -4,6 +4,7 @@ return {
     'saghen/blink.cmp',
     version = '*',
     enabled = true,
+    event = { 'InsertEnter', 'CmdlineEnter' },
     dependencies = {
       'rafamadriz/friendly-snippets',
       {
