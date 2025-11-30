@@ -1,6 +1,8 @@
 require('nvim-treesitter').install {
   -- Programming languages
   'lua',
+  'c',
+  'cpp',
   'c_sharp',
   'java',
   'javascript',
@@ -25,6 +27,7 @@ require('nvim-treesitter').install {
   'bash',
   'sh',
   'tmux',
+  'ssh_config',
 }
 
 vim.api.nvim_create_autocmd('FileType', {

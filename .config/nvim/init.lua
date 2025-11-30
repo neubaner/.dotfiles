@@ -40,6 +40,9 @@ require('lazy').setup {
   spec = {
     { import = 'plugins' },
   },
+  dev = {
+    path = '~/nvim-plugins',
+  },
   ui = {
     icons = vim.g.have_nerd_font and {} or {
       cmd = '⌘',

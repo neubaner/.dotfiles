@@ -15,7 +15,7 @@ return {
             return
           end
 
-          local disable_filetypes = { c = true, cpp = true, razor = true, kotlin = true }
+          local disable_filetypes = { c = true, cpp = true, razor = false, kotlin = true }
 
           return {
             timeout_ms = 10000,
