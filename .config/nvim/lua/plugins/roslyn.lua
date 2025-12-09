@@ -1,21 +1,8 @@
-local handlers = {
-  ['razor/updateHtml'] = function(err, result, ctx, config)
-    vim.print('Called ' .. ctx.method)
-    vim.print(vim.inspect(err))
-    vim.print(vim.inspect(result))
-    vim.print(vim.inspect(ctx))
-    vim.print(vim.inspect(config))
-    return { 'error' }
-  end,
-}
-
 ---@type LazySpec[]
 return {
   {
     'seblj/roslyn.nvim',
-    dev = true,
     dependencies = {
-      -- { dir = '~/personal/rzls.nvim', config = true },
       'mason-org/mason.nvim',
     },
     ft = { 'cs', 'razor' },
@@ -23,32 +10,10 @@ return {
       require('roslyn').setup {
         broad_search = true,
         lock_target = true,
-        filewatching = 'off',
       }
 
-      vim.lsp.set_log_level(vim.lsp.log_levels.DEBUG)
-
-      local rzls_path = vim.fn.expand '$MASON/packages/rzls/libexec/'
       vim.lsp.config('roslyn', {
-        cmd = {
-          'roslyn',
-          '--stdio',
-          '--logLevel=Information',
-          '--extensionLogDirectory=' .. vim.fs.dirname(vim.lsp.get_log_path()),
-          '--razorSourceGenerator=' .. vim.fs.joinpath(rzls_path, 'Microsoft.CodeAnalysis.Razor.Compiler.dll'),
-          '--razorDesignTimePath=' .. vim.fs.joinpath(rzls_path, 'Targets', 'Microsoft.NET.Sdk.Razor.DesignTime.targets'),
-          '--extension',
-          vim.fs.joinpath(rzls_path, 'RazorExtension', 'Microsoft.VisualStudioCode.RazorExtension.dll'),
-        },
-        filetypes = { 'cs', 'razor' },
-        -- handlers = require 'rzls.roslyn_handlers',
-        -- handlers = handlers,
         settings = {
-          razor = {
-            language_server = {
-              cohosting_enabled = true,
-            },
-          },
           ['csharp|background_analysis'] = {
             dotnet_analyzer_diagnostics_scope = 'fullSolution',
             dotnet_compiler_diagnostics_scope = 'fullSolution',
