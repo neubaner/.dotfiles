@@ -12,6 +12,7 @@ require('nvim-treesitter').install {
   'sql',
   'dockerfile',
   'proto',
+  'php',
 
   -- Markup languages
   'toml',
@@ -31,6 +32,14 @@ require('nvim-treesitter').install {
   'ssh_config',
 }
 
+---@param lang string
+---@param query_group string
+---@return boolean
+local function supports_query_group(lang, query_group)
+  local ok, query = pcall(vim.treesitter.query.get, lang, query_group)
+  return ok and query ~= nil
+end
+
 vim.api.nvim_create_autocmd('FileType', {
   group = vim.api.nvim_create_augroup('treesitter-setup', { clear = true }),
   callback = function(args)
@@ -43,6 +52,9 @@ vim.api.nvim_create_autocmd('FileType', {
     end
 
     vim.treesitter.start(buf, language)
-    vim.bo[buf].indentexpr = 'v:lua.require"nvim-treesitter".indentexpr()'
+
+    if supports_query_group(language, 'indent') then
+      vim.bo[buf].indentexpr = 'v:lua.require"nvim-treesitter".indentexpr()'
+    end
   end,
 })
