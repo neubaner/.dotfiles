@@ -1,4 +1,4 @@
-require('nvim-treesitter').install {
+require('nvim-treesitter').install({
   -- Programming languages
   'lua',
   'c',
@@ -13,6 +13,7 @@ require('nvim-treesitter').install {
   'dockerfile',
   'proto',
   'php',
+  'scala',
 
   -- Markup languages
   'toml',
@@ -29,7 +30,7 @@ require('nvim-treesitter').install {
   'bash',
   'tmux',
   'ssh_config',
-}
+})
 
 ---@param lang string
 ---@param query_group string
@@ -52,8 +53,13 @@ vim.api.nvim_create_autocmd('FileType', {
 
     vim.treesitter.start(buf, language)
 
-    if supports_query_group(language, 'indent') then
+    if supports_query_group(language, 'indents') then
       vim.bo[buf].indentexpr = 'v:lua.require"nvim-treesitter".indentexpr()'
+    end
+
+    if supports_query_group(language, 'folds') then
+      vim.wo[0][0].foldexpr = 'v:lua.vim.treesitter.foldexpr()'
+      vim.wo[0][0].foldmethod = 'expr'
     end
   end,
 })

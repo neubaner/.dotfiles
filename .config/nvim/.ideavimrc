@@ -1,0 +1,394 @@
+" =============================================================================
+" .ideavimrc - IdeaVim configuration
+" Generated from Neovim config at ~/.config/nvim-new
+" =============================================================================
+
+" -----------------------------------------------------------------------------
+" Leader key
+" -----------------------------------------------------------------------------
+let mapleader=" "
+let maplocalleader=" "
+
+" -----------------------------------------------------------------------------
+" Vim options (mirroring Neovim settings)
+" -----------------------------------------------------------------------------
+set number                  " Show line numbers
+set relativenumber          " Relative line numbers
+set ignorecase              " Case-insensitive search
+set smartcase               " Case-sensitive if uppercase present
+set hlsearch                " Highlight search matches
+set incsearch               " Incremental search
+set scrolloff=10            " Keep 10 lines above/below cursor
+set noshowmode              " Don't show mode in command line (IDE shows it)
+set timeoutlen=300          " Timeout for mapped key sequences
+set splitright              " Open vertical splits to the right
+set splitbelow              " Open horizontal splits below
+set cursorline              " Highlight the current line
+set list                    " Show whitespace characters
+set visualbell              " Use visual bell instead of beeping
+
+" -----------------------------------------------------------------------------
+" IdeaVim-specific options
+" -----------------------------------------------------------------------------
+set ideajoin                " Use IDE smart join for J command
+set ideamarks               " Map vim global marks to IDE bookmarks
+set idearefactormode=keep   " Stay in current mode during refactors
+
+" Uncomment the line below to discover IntelliJ action IDs
+" (shows a notification with the action ID when you trigger an action)
+" set trackactionids
+
+" -----------------------------------------------------------------------------
+" Plugin emulations
+" -----------------------------------------------------------------------------
+
+" Surround: add/delete/change surrounding pairs (remapped below to sa/sd/sr)
+" https://github.com/tpope/vim-surround
+set surround
+
+" Argument text object: ia/aa for function arguments
+" https://www.vim.org/scripts/script.php?script_id=2699
+set argtextobj
+let g:argtextobj_pairs="(:),{:},<:>"
+
+" Commentary: gc/gcc to comment out lines/motions
+" https://github.com/tpope/vim-commentary
+set commentary
+
+" Highlighted yank: briefly highlight yanked region (matches TextYankPost autocmd)
+" https://github.com/machakann/vim-highlightedyank
+set highlightedyank
+let g:highlightedyank_highlight_duration = "250"
+
+" Matchit: extended % matching for language keywords
+" https://github.com/chrisbra/matchit
+set matchit
+
+" Exchange: easy text exchange operator (cx/cxx/X/cxc)
+" https://github.com/tommcdo/vim-exchange
+set exchange
+
+" ReplaceWithRegister: gr{motion} to replace with register contents
+" https://github.com/vim-scripts/ReplaceWithRegister
+set ReplaceWithRegister
+
+" Entire text object: ae/ie to select entire buffer
+" https://github.com/kana/vim-textobj-entire
+set textobj-entire
+
+" Indent text object: ai/ii/aI/iI for indent-based selections
+" https://github.com/michaeljsmith/vim-indent-object
+set textobj-indent
+
+" NERDTree: project tree navigation
+" https://github.com/preservim/nerdtree
+set NERDTree
+
+" Multiple cursors: Ctrl-n driven multi-cursor editing
+" https://github.com/terryma/vim-multiple-cursors
+set multiple-cursors
+
+" Which-Key: popup showing available keybindings (matches mini.clue)
+" Requires: https://plugins.jetbrains.com/plugin/15976-which-key
+set which-key
+let g:WhichKey_ShowVimActions = "true"
+let g:WhichKey_DefaultDelay = 300
+
+" Mini.ai: extended a/i text objects (aq/iq for any quotes, ab/ib for any brackets)
+set mini-ai
+
+" Sneak: jump to any location with 2 characters (s/S + 2 chars)
+" https://github.com/justinmk/vim-sneak
+set sneak
+
+" -----------------------------------------------------------------------------
+" Surround remaps: match mini.surround keybindings (sa/sd/sr)
+" -----------------------------------------------------------------------------
+" sa = surround add (equivalent to ys in vim-surround)
+"   Usage: sa{motion}{char}  e.g. saiw) surrounds word with parens
+nmap sa ys
+" Visual mode: sa to surround selection
+xmap sa S
+
+" sd = surround delete (equivalent to ds in vim-surround)
+"   Usage: sd{char}  e.g. sd) deletes surrounding parens
+nmap sd ds
+
+" sr = surround replace (equivalent to cs in vim-surround)
+"   Usage: sr{old}{new}  e.g. sr)" replaces parens with quotes
+nmap sr cs
+
+" -----------------------------------------------------------------------------
+" Multiple cursors remaps
+" -----------------------------------------------------------------------------
+nmap <C-n> <Plug>NextWholeOccurrence
+xmap <C-n> <Plug>NextWholeOccurrence
+nmap g<C-n> <Plug>NextOccurrence
+xmap g<C-n> <Plug>NextOccurrence
+xmap <C-x> <Plug>SkipOccurrence
+xmap <C-p> <Plug>RemoveOccurrence
+nmap <leader><C-n> <Plug>AllWholeOccurrences
+xmap <leader><C-n> <Plug>AllWholeOccurrences
+
+" -----------------------------------------------------------------------------
+" Search / clear highlight
+" -----------------------------------------------------------------------------
+" Clear search highlighting with Escape (matches Neovim config)
+nmap <Esc> :nohlsearch<CR>
+
+" -----------------------------------------------------------------------------
+" Which-Key group descriptions
+" -----------------------------------------------------------------------------
+let g:WhichKeyDesc_search         = "<leader>s  Search"
+let g:WhichKeyDesc_search_files   = "<leader>sf Search Files"
+let g:WhichKeyDesc_search_grep    = "<leader>sg Search by Grep"
+let g:WhichKeyDesc_search_word    = "<leader>sw Search Word under cursor"
+let g:WhichKeyDesc_search_recent  = "<leader>s. Recent Files"
+let g:WhichKeyDesc_search_diag    = "<leader>sd Search Diagnostics"
+let g:WhichKeyDesc_search_help    = "<leader>sh Search Help"
+let g:WhichKeyDesc_search_keys    = "<leader>sk Search Keymaps"
+let g:WhichKeyDesc_search_actions = "<leader>ss Search Actions"
+let g:WhichKeyDesc_search_branch  = "<leader>sb Search Git Branches"
+let g:WhichKeyDesc_search_open    = "<leader>s/ Search in Open Files"
+let g:WhichKeyDesc_buffers        = "<leader><leader> Find Buffers"
+let g:WhichKeyDesc_find_in_file   = "<leader>/  Find in Current File"
+let g:WhichKeyDesc_diag_float     = "<leader>e  Show Error Description"
+let g:WhichKeyDesc_diag_list      = "<leader>q  Problems View"
+let g:WhichKeyDesc_diag_all       = "<leader>Q  All Problems"
+let g:WhichKeyDesc_inlay_toggle   = "<leader>it Toggle Inlay Hints"
+let g:WhichKeyDesc_codelens_tog   = "<leader>ct Toggle Code Lens"
+let g:WhichKeyDesc_codelens_run   = "<leader>cr Run Code Lens"
+let g:WhichKeyDesc_explorer       = "<leader>-  File Explorer (float)"
+let g:WhichKeyDesc_git            = "<leader>g  Git"
+let g:WhichKeyDesc_git_files      = "<leader>gf Git Files"
+let g:WhichKeyDesc_code           = "<leader>c  Code"
+
+" -----------------------------------------------------------------------------
+" Telescope-equivalent search mappings -> IntelliJ actions
+" -----------------------------------------------------------------------------
+" <leader>sf -> Search files (GotoFile)
+nmap <leader>sf <Action>(GotoFile)
+" <leader>sg -> Search by grep (FindInPath)
+nmap <leader>sg <Action>(FindInPath)
+" <leader>sw -> Search word under cursor
+nmap <leader>sw <Action>(FindWordAtCaret)
+" <leader>s. -> Recent files
+nmap <leader>s. <Action>(RecentFiles)
+" <leader>sd -> Diagnostics/problems
+nmap <leader>sd <Action>(ActivateProblemsViewToolWindow)
+" <leader>sh -> Help
+nmap <leader>sh <Action>(HelpTopics)
+" <leader>sk -> Search keymaps/actions
+nmap <leader>sk <Action>(GotoAction)
+" <leader>ss -> Search all actions (picker of pickers equivalent)
+nmap <leader>ss <Action>(GotoAction)
+" <leader>sb -> Search git branches
+nmap <leader>sb <Action>(Git.Branches)
+" <leader>sr -> Search resume (reopen last search — closest equivalent)
+nmap <leader>sr <Action>(FindInPath)
+" <leader>s/ -> Search in open files
+nmap <leader>s/ <Action>(FindInPath)
+
+" <leader><leader> -> Buffer switcher
+nmap <leader><leader> <Action>(Switcher)
+
+" <leader>/ -> Find in current file (like current_buffer_fuzzy_find)
+nmap <leader>/ <Action>(Find)
+
+" <leader>gf -> Git files (GotoFile covers this in IntelliJ with VCS awareness)
+nmap <leader>gf <Action>(GotoFile)
+
+" -----------------------------------------------------------------------------
+" LSP-equivalent code navigation mappings
+" -----------------------------------------------------------------------------
+" grd -> Go to definition
+nmap grd <Action>(GotoDeclaration)
+" grD -> Go to declaration (same target in IntelliJ)
+nmap grD <Action>(GotoDeclaration)
+" grr -> Find references (like lsp_references)
+nmap grr <Action>(FindUsages)
+" gri -> Go to implementation
+nmap gri <Action>(GotoImplementation)
+" grt -> Go to type definition
+nmap grt <Action>(GotoTypeDeclaration)
+" grn -> Rename symbol
+nmap grn <Action>(RenameElement)
+" gra -> Code action / Show intentions (normal + visual)
+nmap gra <Action>(ShowIntentionActions)
+xmap gra <Action>(ShowIntentionActions)
+" gO -> Document symbols (file structure popup)
+nmap gO <Action>(FileStructurePopup)
+" gW -> Workspace symbols
+nmap gW <Action>(GotoSymbol)
+
+" K -> Hover documentation (quick doc)
+nmap K <Action>(QuickJavaDoc)
+
+" -----------------------------------------------------------------------------
+" Diagnostics / error navigation
+" -----------------------------------------------------------------------------
+" <leader>e -> Show error description (like vim.diagnostic.open_float)
+nmap <leader>e <Action>(ShowErrorDescription)
+" <leader>q -> Open problems view (like diagnostic.setloclist)
+nmap <leader>q <Action>(ActivateProblemsViewToolWindow)
+" <leader>Q -> All problems
+nmap <leader>Q <Action>(ActivateProblemsViewToolWindow)
+
+" [d / ]d -> Previous/next error (like mini.bracketed [d/]d)
+nmap [d <Action>(GotoPreviousError)
+nmap ]d <Action>(GotoNextError)
+
+" -----------------------------------------------------------------------------
+" Bracket navigation (matching mini.bracketed where possible)
+" -----------------------------------------------------------------------------
+" [h / ]h -> Previous/next VCS change (git hunk)
+nmap [h <Action>(VcsShowPrevChangeMarker)
+nmap ]h <Action>(VcsShowNextChangeMarker)
+" [m / ]m -> Previous/next method
+nmap [m <Action>(MethodUp)
+nmap ]m <Action>(MethodDown)
+" [c / ]c -> Previous/next diff change
+nmap [c <Action>(PreviousDiff)
+nmap ]c <Action>(NextDiff)
+" [e / ]e -> Move line/statement up/down (bonus)
+nmap [e <Action>(MoveLineUp)
+nmap ]e <Action>(MoveLineDown)
+" [q / ]q -> Previous/next occurrence (closest to quickfix navigation)
+nmap [q <Action>(PreviousOccurrence)
+nmap ]q <Action>(NextOccurrence)
+" [b / ]b -> Previous/next tab (buffer equivalent)
+nmap [b <Action>(PreviousTab)
+nmap ]b <Action>(NextTab)
+
+" -----------------------------------------------------------------------------
+" Code lens / inlay hints toggles
+" -----------------------------------------------------------------------------
+" <leader>it -> Toggle inlay hints
+nmap <leader>it <Action>(ToggleInlayHintsGloballyAction)
+" <leader>ct -> Toggle code vision (code lens equivalent)
+nmap <leader>ct <Action>(ToggleInlineHintsAction)
+" <leader>cr -> Run (closest to code lens run)
+nmap <leader>cr <Action>(RunClass)
+
+" -----------------------------------------------------------------------------
+" Window management (matching Alt key mappings)
+" -----------------------------------------------------------------------------
+" Alt-, / Alt-. -> Resize split width (like <C-w>5< / <C-w>5>)
+nmap <M-,> <Action>(StretchSplitToLeft)
+nmap <M-.> <Action>(StretchSplitToRight)
+" Alt-t / Alt-s -> Resize split height (like <C-w>5+ / <C-w>5-)
+nmap <M-t> <Action>(StretchSplitToTop)
+nmap <M-s> <Action>(StretchSplitToBottom)
+
+" Standard window navigation with Ctrl-h/j/k/l (matches vim-tmux-navigator)
+nmap <C-h> <C-w>h
+nmap <C-j> <C-w>j
+nmap <C-k> <C-w>k
+nmap <C-l> <C-w>l
+
+" -----------------------------------------------------------------------------
+" File explorer
+" -----------------------------------------------------------------------------
+" - -> Select current file in project view (closest to oil.nvim opening parent)
+nmap - <Action>(SelectInProjectView)
+" <leader>- -> Toggle project tool window (like oil --float)
+nmap <leader>- <Action>(ActivateProjectToolWindow)
+
+" -----------------------------------------------------------------------------
+" Terminal
+" -----------------------------------------------------------------------------
+" T -> Toggle terminal (matches floating terminal toggle)
+nmap T <Action>(ActivateTerminalToolWindow)
+
+" -----------------------------------------------------------------------------
+" Formatting
+" -----------------------------------------------------------------------------
+" Format file (matches conform.nvim format on save / manual format)
+nmap <leader>cf <Action>(ReformatCode)
+xmap <leader>cf <Action>(ReformatCode)
+let g:WhichKeyDesc_code_format = "<leader>cf Format Code"
+
+" Optimize imports
+nmap <leader>ci <Action>(OptimizeImports)
+let g:WhichKeyDesc_code_imports = "<leader>ci Optimize Imports"
+
+" -----------------------------------------------------------------------------
+" Refactoring (IntelliJ-specific bonus mappings)
+" -----------------------------------------------------------------------------
+nmap <leader>rm <Action>(ExtractMethod)
+xmap <leader>rm <Action>(ExtractMethod)
+nmap <leader>rv <Action>(IntroduceVariable)
+xmap <leader>rv <Action>(IntroduceVariable)
+nmap <leader>rc <Action>(IntroduceConstant)
+xmap <leader>rc <Action>(IntroduceConstant)
+nmap <leader>ri <Action>(Inline)
+nmap <leader>rs <Action>(ChangeSignature)
+nmap <leader>rr <Action>(Refactorings.QuickListPopupAction)
+let g:WhichKeyDesc_refactor         = "<leader>r  Refactor"
+let g:WhichKeyDesc_refactor_method  = "<leader>rm Extract Method"
+let g:WhichKeyDesc_refactor_var     = "<leader>rv Introduce Variable"
+let g:WhichKeyDesc_refactor_const   = "<leader>rc Introduce Constant"
+let g:WhichKeyDesc_refactor_inline  = "<leader>ri Inline"
+let g:WhichKeyDesc_refactor_sig     = "<leader>rs Change Signature"
+let g:WhichKeyDesc_refactor_menu    = "<leader>rr Refactor Menu"
+
+" -----------------------------------------------------------------------------
+" Run / Debug (IntelliJ-specific bonus mappings)
+" -----------------------------------------------------------------------------
+nmap <leader>dr <Action>(Run)
+nmap <leader>dd <Action>(Debug)
+nmap <leader>ds <Action>(Stop)
+nmap <leader>db <Action>(ToggleLineBreakpoint)
+nmap <leader>dc <Action>(Resume)
+nmap <leader>dn <Action>(StepOver)
+nmap <leader>di <Action>(StepInto)
+nmap <leader>do <Action>(StepOut)
+let g:WhichKeyDesc_debug            = "<leader>d  Debug/Run"
+let g:WhichKeyDesc_debug_run        = "<leader>dr Run"
+let g:WhichKeyDesc_debug_debug      = "<leader>dd Debug"
+let g:WhichKeyDesc_debug_stop       = "<leader>ds Stop"
+let g:WhichKeyDesc_debug_breakpoint = "<leader>db Toggle Breakpoint"
+let g:WhichKeyDesc_debug_continue   = "<leader>dc Continue/Resume"
+let g:WhichKeyDesc_debug_next       = "<leader>dn Step Over"
+let g:WhichKeyDesc_debug_into       = "<leader>di Step Into"
+let g:WhichKeyDesc_debug_out        = "<leader>do Step Out"
+
+" -----------------------------------------------------------------------------
+" Git (IntelliJ-specific bonus mappings)
+" -----------------------------------------------------------------------------
+nmap <leader>gb <Action>(Annotate)
+nmap <leader>gl <Action>(Vcs.ShowTabbedFileHistory)
+nmap <leader>gd <Action>(Compare.SameVersion)
+nmap <leader>gr <Action>(Vcs.RollbackChangedLines)
+let g:WhichKeyDesc_git_blame   = "<leader>gb Git Blame (Annotate)"
+let g:WhichKeyDesc_git_log     = "<leader>gl Git File History"
+let g:WhichKeyDesc_git_diff    = "<leader>gd Git Diff"
+let g:WhichKeyDesc_git_revert  = "<leader>gr Revert Hunk"
+
+" -----------------------------------------------------------------------------
+" Misc useful mappings
+" -----------------------------------------------------------------------------
+" Quick close notification/popups
+nmap <leader>x <Action>(HideActiveWindow)
+let g:WhichKeyDesc_close_window = "<leader>x  Close Active Tool Window"
+
+" Generate (constructors, getters, setters, etc.)
+nmap <leader>cg <Action>(Generate)
+let g:WhichKeyDesc_code_generate = "<leader>cg Generate"
+
+" Quick switch scheme / keymap (like Telescope builtin picker)
+nmap <leader>st <Action>(ChangeLaf)
+let g:WhichKeyDesc_search_theme = "<leader>st Switch Theme"
+
+" Go to test / Go to subject (toggle between test and implementation)
+nmap <leader>tt <Action>(GotoTest)
+let g:WhichKeyDesc_test_toggle = "<leader>tt Go to Test/Subject"
+
+" Rerun last test
+nmap <leader>tr <Action>(Rerun)
+let g:WhichKeyDesc_test_rerun = "<leader>tr Rerun Last Test"
+
+" Run test at cursor (matches your Java <leader>dn mapping)
+nmap <leader>tn <Action>(RunClass)
+let g:WhichKeyDesc_test_nearest = "<leader>tn Run Test at Cursor"
+let g:WhichKeyDesc_test         = "<leader>t  Test"

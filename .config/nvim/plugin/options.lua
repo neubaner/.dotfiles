@@ -1,4 +1,4 @@
-vim.diagnostic.config {
+vim.diagnostic.config({
   severity_sort = true,
   float = { border = 'rounded', source = 'if_many' },
   underline = { min = vim.diagnostic.severity.WARN, max = vim.diagnostic.severity.ERROR },
@@ -14,4 +14,12 @@ vim.diagnostic.config {
     source = 'if_many',
     spacing = 2,
   },
-}
+})
+
+vim.api.nvim_create_autocmd('TextYankPost', {
+  desc = 'Highlight when yanking text',
+  group = vim.api.nvim_create_augroup('highlight-yank', { clear = true }),
+  callback = function()
+    vim.highlight.on_yank()
+  end,
+})
