@@ -27,7 +27,6 @@ require('nvim-treesitter').install {
   'make',
   'zsh',
   'bash',
-  'sh',
   'tmux',
   'ssh_config',
 }

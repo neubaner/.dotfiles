@@ -67,11 +67,7 @@ return {
               group = codelens_augroup,
               buffer = event.buf,
               callback = function(ev)
-                if enabled then
-                  vim.lsp.codelens.refresh { bufnr = ev.buf }
-                else
-                  vim.lsp.codelens.clear(client.id, ev.buf)
-                end
+                vim.lsp.codelens.enable(enabled, { bufnr = ev.buf })
               end,
             })
           end

@@ -20,6 +20,7 @@ return {
         pattern = { 'json' },
         callback = function()
           vim.api.nvim_set_option_value('formatprg', 'jq', { scope = 'local' })
+          vim.api.nvim_set_option_value('formatexpr', '', { scope = 'local' })
         end,
       })
     end,
